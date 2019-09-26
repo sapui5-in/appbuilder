@@ -1,0 +1,265 @@
+.mainShell>.sapMShellBrandingBar {
+	background: transparent;
+}
+
+.appDesignerPageTitle {
+	font-size: 1.25rem;
+	text-shadow: none;
+}
+
+.appDesignerPageSubTitle {
+	text-shadow: none;
+	color: #68bae2 !important;
+	font-weight: 400;
+	font-size: 1.25rem;
+	font-family: Segoe ui;
+	text-transform: uppercase;
+}
+
+.footerTaglineText {
+	color: white !important;
+    font-style: italic;
+    font-size: 11px;
+    letter-spacing: 0.5px;
+    padding-right: 1rem;
+}
+
+/* Enter your custom styles here */
+.controlSelection {
+	z-index: 999;
+	background: #6ab966 !important;
+	outline: 2px solid #4f764d !important;
+}
+
+.appSplitter>section, .appSplitter>section>section {
+	background-color: white !important;
+}
+
+.backgroundBlue {
+	background-color: blue !important;
+	border: 1px solid blue;
+}
+
+.backgroundGreen {
+	background-color: green !important;
+	border: 1px solid green;
+}
+
+.backgroundRed {
+	background-color: red !important;
+	border: 1px solid red;
+}
+
+.backgroundWhite {
+	background-color: white !important;
+}
+
+.appContainer {
+	background-color: #dedede !important;
+	overflow-y: overlay;
+}
+
+.appContainer>div {
+	height: 100%;
+}
+
+.appContainer>div>.sapUiJSONView {
+	height: 100%;
+}
+
+.MetadataSelectorPropName {
+	font-size: 11px !important;
+}
+
+.MetadataSelectorPropType {
+	color: #999999 !important;
+	font-size: 11px !important;
+}
+
+.sapMInputBaseInner, .sapMText, .sapMLabel, .sapMITBText {
+	font-family: segoe ui;
+	color: #575962;
+}
+
+#idContainer>div {
+	height: 100% !important;
+	width: 100% !important;
+}
+
+.displayContent>div {
+	display: contents;
+}
+
+.leftSidebarDark {
+	background-color: #525a65;
+}
+
+.headerToolbar {
+	background-color: white;
+	border-bottom: 1px solid #e8e8e8;
+	box-shadow: none;
+	padding-right: 1.5rem;
+	padding-left: 1.5rem;
+}
+
+.lightGrayBG {
+	background-color: #f9f9f9;
+	padding: 1.5rem;
+}
+
+.projectTreeHeaderToolbarTitle {
+	color: white;
+	text-shadow: none;
+}
+
+.projectTree {
+	background-color: transparent;
+}
+
+.projectTreeItem {
+	background-color: transparent;
+	color: #b6bac3;
+	height: 1.5rem;
+}
+
+.projectTreeItem.sapMLIB {
+	border-bottom: 0px;
+}
+
+.projectTreeItem.sapMLIB.sapMLIBSelected {
+	background-color: #5c646f;
+}
+
+.projectTreeItem:hover {
+	background-color: #5c646f;
+}
+
+.projectTreeItem>.sapMTreeItemBaseExpander {
+	color: #b6bac3;
+}
+
+.projectTreeItemText {
+	color: #b6bac3;
+	font-size: 12px;
+}
+
+.blockHierarchyTreeItem {
+	background-color: transparent;
+	color: #b6bac3;
+}
+
+.blockHierarchyTreeItemText>.sapMObjectIdentifierTextBellow {
+	margin-top: 0 !important;
+}
+
+.blockHierarchyTreeItem.sapMLIB {
+	border-bottom: 0px;
+}
+
+.blockHierarchyTreeItem.sapMLIB.sapMLIBSelected {
+	background-color: #5c646f;
+}
+
+.blockHierarchyTreeItem:hover {
+	background-color: #5c646f;
+}
+
+.blockHierarchyTreeItem>.sapMTreeItemBaseExpander {
+	color: #b6bac3;
+}
+
+.blockHierarchyTreeItemText>div>div>span, .blockHierarchyTreeItemText>div>span
+	{
+	color: #b6bac3 !important;
+	font-size: 12px !important;
+}
+
+.middleSection {
+	background-color: white;
+	border: 1px solid #e8e8e8;
+}
+
+.middleSection>div {
+	display: inline;
+	height: 100%;
+}
+
+.rightSidebarBlock {
+	background-color: white;
+	border: 1px solid #e8e8e8;
+}
+
+.rightSidebarBlock>div>.sapMTB {
+	border-left: 10px solid #44a3cf;
+}
+
+.rightSidebarBlockTitle {
+	padding-left: 0.5rem;
+	color: #717171;
+}
+
+.metadataSelectorTable>.sapUiTableCnt {
+	border-left: 0;
+	border-right: 0;
+}
+
+.metadataSelectorTable>.sapUiTableCnt>div>.sapUiTableCCnt>div {
+	
+}
+
+.metadataSelectorTable>.sapUiTableCnt>div>.sapUiTableCCnt>.sapUiTableRowHdrScr>.sapUiTableRowHdr
+	{
+	border: 0;
+}
+
+.metadataSelectorTable>.sapUiTableCnt>div>.sapUiTableCCnt>div>div>table>tbody>.sapUiTableTr>td
+	{
+	border: 0;
+}
+
+.metadataSelectorTable>.sapUiTableCnt>div>.sapUiTableColHdrCnt>div {
+	border: 0;
+}
+
+.metadataSelectorTable>.sapUiTableCnt>div>.sapUiTableColHdrCnt>div>table>tbody>tr>td
+	{
+	border: 0;
+}
+
+.highlight {
+	outline: 2px dashed gray;
+}
+
+#overlayControl {
+	position: fixed;
+	top: 0px;
+	left: 0px;
+	width: 0;
+	height: 0;
+	background: #73b973;
+	border: 1px solid green;
+	opacity: 0.75;
+	z-index: 10000;
+}
+
+.rightSidebarBlockHeaderBar {
+	border-left: 10px solid #44a3cf;
+}
+
+.projectHeaderToolbar {
+	background-color: #44a3cf;
+	padding-left: 0.5rem;
+	padding-right: 0.5rem;
+}
+
+.SBLivePreview>.sapMSegBBtnSel {
+	background-color: #44a3cf;
+	border-color: #44a3cf;
+}
+
+.customListItem {
+	display: inline-block;
+    text-align: center;
+    border: 1px solid #e8e8e8;
+    padding: 0.5rem;
+}

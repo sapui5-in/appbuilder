@@ -1,0 +1,9 @@
+<mvc:View controllerName="sapui5in.appbuilder.controller.Login"
+	xmlns:l="sap.ui.layout" xmlns:mvc="sap.ui.core.mvc"
+	xmlns:core="sap.ui.core" xmlns:table="sap.ui.table" displayBlock="true"
+	xmlns="sap.m">
+	<core:Fragment
+		fragmentName="sapui5in.appbuilder.modules.branding.fragments.HeaderToolbar"
+		type="XML" />
+	
+</mvc:View>

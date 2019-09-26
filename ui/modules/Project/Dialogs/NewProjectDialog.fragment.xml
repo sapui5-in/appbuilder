@@ -1,0 +1,14 @@
+<core:FragmentDefinition xmlns="sap.m"
+	xmlns:core="sap.ui.core">
+	<Dialog title="Create New Project" contentHeight="60%"
+		beforeOpen="onBeforeOpen" showHeader="false" contentWidth="60%"
+		class="sapUiSizeCompact">
+		<core:Fragment
+			fragmentName="sapui5in.appbuilder.modules.Project.fragments.ProjectWizard"
+			type="XML" />
+		<buttons>
+			<Button text="Create" press="onPressBtnCreate"></Button>
+			<Button text="Close" press="onPressBtnClose"></Button>
+		</buttons>
+	</Dialog>
+</core:FragmentDefinition>

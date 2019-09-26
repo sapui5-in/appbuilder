@@ -1,0 +1,23 @@
+<core:FragmentDefinition xmlns="sap.m"
+	xmlns:core="sap.ui.core">
+	<Dialog title="Create New Block" contentHeight="auto"
+		beforeOpen="onBeforeOpenNewBlockDialog" contentWidth="20%"
+		class="sapUiSizeCompact sapUiContentPadding">
+		<Label text="Block Name" design="Bold" />
+		<Input value="{/Block/name}" />
+		<Label text="Root Control" design="Bold" width="100%"
+			class="sapUiSmallMarginTop" />
+		<ComboBox items="{ path: '/rootControls' }" width="100%"
+			selectedKey="{/Block/rootControl}">
+			<items>
+				<core:Item text="{text}" key="{key}" />
+			</items>
+		</ComboBox>
+		<buttons>
+			<Button text="Create"
+				press="onPressBtnCreateCreateBlockDialog" />
+			<Button text="Cancel"
+				press="onPressBtnCancelCreateBlockDialog" />
+		</buttons>
+	</Dialog>
+</core:FragmentDefinition>

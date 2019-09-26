@@ -1,0 +1,503 @@
+{
+	"tree": [{
+		"name": "Blocks",
+		"nodes": [{
+			"name": "Login",
+			"type": "Block"
+			}, {
+			"name": "Container",
+			"type": "Block"
+			}, {
+			"name": "Sidebars",
+			"type": "Block"
+			}, {
+			"name": "Notifications - Growl",
+			"type": "Block"
+			}, {
+			"name": "Full Page layout with Menu etc",
+			"type": "Block"
+			}, {
+			"name": "Buttons",
+			"type": "Block"
+			}, {
+			"name": "Login",
+			"type": "Block"
+			}, {
+			"name": "Table",
+			"type": "Block",
+			"nodes": [{
+				"name": "sap.m.Table",
+				"type": "Control",
+				"selections": {},
+				"nodes": [{
+					"name": "items",
+					"label": "items",
+					"type": "Aggregation",
+					"aggregationType": "Template",
+					"multiple": true,
+					"nodes": [{
+						"name": "sap.m.ColumnListItem",
+						"type": "Control",
+						"nodes": [{
+							"name": "cells",
+							"label": "cells",
+							"type": "Aggregation",
+							"aggregationType": "Manual",
+							"multiple": true,
+							"nodes": [{
+								"name": "sap.m.Text",
+								"type": "Control",
+								"nodes": [],
+								"selections": {
+									"properties": {
+										"text": {
+											"value": "Hi",
+											"fixedValue": true
+										}
+									}
+								},
+								"id": "id8629"
+							}, {
+								"name": "sap.m.Text",
+								"type": "Control",
+								"nodes": [],
+								"selections": {
+									"properties": {
+										"text": {
+											"value": "",
+											"fixedValue": false
+										}
+									}
+								},
+								"id": "id8634"
+							}, {
+								"name": "sap.m.Text",
+								"type": "Control",
+								"nodes": [],
+								"selections": {
+									"properties": {
+										"text": {
+											"value": "",
+											"fixedValue": false
+										}
+									}
+								},
+								"id": "id8639"
+							}, {
+								"name": "sap.m.Text",
+								"type": "Control",
+								"nodes": [],
+								"selections": {
+									"properties": {
+										"text": {
+											"value": "",
+											"fixedValue": false
+										}
+									}
+								},
+								"id": "id8644"
+							}]
+						}],
+						"selections": {},
+						"id": "id8624"
+					}]
+				}, {
+					"name": "columns",
+					"label": "columns",
+					"type": "Aggregation",
+					"aggregationType": "Manual",
+					"multiple": true,
+					"nodes": [{
+						"name": "sap.m.Column",
+						"type": "Control",
+						"nodes": [{
+							"name": "header",
+							"label": "header",
+							"type": "Aggregation",
+							"aggregationType": "Manual",
+							"multiple": false,
+							"nodes": [{
+								"name": "sap.m.Text",
+								"type": "Control",
+								"nodes": [],
+								"selections": {
+									"properties": {
+										"text": {
+											"value": "fname",
+											"fixedValue": true
+										}
+									}
+								},
+								"id": "id8674"
+							}]
+						}],
+						"selections": {},
+						"id": "id8669"
+					}, {
+						"name": "sap.m.Column",
+						"type": "Control",
+						"nodes": [{
+							"name": "header",
+							"label": "header",
+							"type": "Aggregation",
+							"aggregationType": "Manual",
+							"multiple": false,
+							"nodes": [{
+								"name": "sap.m.Text",
+								"type": "Control",
+								"nodes": [],
+								"selections": {
+									"properties": {
+										"text": {
+											"value": "LName",
+											"fixedValue": true
+										}
+									}
+								},
+								"id": "id8704"
+							}]
+						}],
+						"selections": {},
+						"id": "id8699"
+					}, {
+						"name": "sap.m.Column",
+						"type": "Control",
+						"nodes": [{
+							"name": "header",
+							"label": "header",
+							"type": "Aggregation",
+							"aggregationType": "Manual",
+							"multiple": false,
+							"nodes": [{
+								"name": "sap.m.Text",
+								"type": "Control",
+								"nodes": [],
+								"selections": {
+									"properties": {
+										"text": {
+											"value": "Email",
+											"fixedValue": true
+										}
+									}
+								},
+								"id": "id8734"
+							}]
+						}],
+						"selections": {},
+						"id": "id8729"
+					}, {
+						"name": "sap.m.Column",
+						"type": "Control",
+						"nodes": [{
+							"name": "header",
+							"label": "header",
+							"type": "Aggregation",
+							"aggregationType": "Manual",
+							"multiple": false,
+							"nodes": [{
+								"name": "sap.m.Text",
+								"type": "Control",
+								"nodes": [],
+								"selections": {
+									"properties": {
+										"text": {
+											"value": "Address",
+											"fixedValue": true
+										}
+									}
+								},
+								"id": "id8764"
+							}]
+						}],
+						"selections": {},
+						"id": "id8759"
+					}]
+				}],
+				"id": "id8539"
+			}]
+		}]
+	}, {
+		"name": "Projects",
+		"nodes": [{
+			"name": "Project 1",
+			"type": "Project",
+			"nodes": [{
+				"name": "App",
+				"type": "Block",
+				"nodes": [{
+					"name": "sap.m.Page",
+					"type": "Control",
+					"nodes": [{
+						"name": "content",
+						"label": "content",
+						"type": "Aggregation",
+						"aggregationType": "Manual",
+						"multiple": true,
+						"nodes": [{
+							"name": "sap.m.VBox",
+							"type": "Control",
+							"nodes": [{
+								"name": "items",
+								"label": "items",
+								"type": "Aggregation",
+								"aggregationType": "Manual",
+								"multiple": true,
+								"nodes": [{
+									"name": "sap.m.Button",
+									"type": "Control",
+									"nodes": [],
+									"selections": {
+										"properties": {
+											"text": {
+												"value": "Click Me",
+												"fixedValue": true
+											}
+										}
+									}
+								}, {
+									"name": "sap.m.HBox",
+									"type": "Control",
+									"nodes": [{
+										"name": "items",
+										"label": "items",
+										"type": "Aggregation",
+										"aggregationType": "Template",
+										"multiple": true,
+										"nodes": [{
+											"name": "sap.m.Button",
+											"type": "Control",
+											"nodes": [],
+											"selections": {
+												"properties": {
+													"text": {
+														"value": "SAPUI5.in",
+														"fixedValue": true
+													}
+												}
+											}
+										}]
+									}],
+									"selections": {}
+								}, {
+									"name": "sap.m.VBox",
+									"type": "Control",
+									"nodes": [{
+										"name": "items",
+										"label": "items",
+										"type": "Aggregation",
+										"aggregationType": "Manual",
+										"multiple": true,
+										"nodes": [{
+											"name": "sap.m.HBox",
+											"type": "Control",
+											"nodes": [{
+												"name": "items",
+												"label": "items",
+												"type": "Aggregation",
+												"aggregationType": "Template",
+												"multiple": true,
+												"nodes": [{
+													"name": "sap.m.Button",
+													"type": "Control",
+													"nodes": [],
+													"selections": {
+														"properties": {
+															"text": {
+																"value": null,
+																"fixedValue": false
+															}
+														}
+													}
+												}]
+											}],
+											"selections": {}
+										}, {
+											"name": "sap.m.HBox",
+											"type": "Control",
+											"nodes": [{
+												"name": "items",
+												"label": "items",
+												"type": "Aggregation",
+												"aggregationType": "Manual",
+												"multiple": true,
+												"nodes": [{
+													"name": "sap.m.Text",
+													"type": "Control",
+													"nodes": [],
+													"selections": {
+														"properties": {
+															"text": {
+																"value": "",
+																"fixedValue": false
+															}
+														}
+													}
+												}, {
+													"name": "sap.m.Text",
+													"type": "Control",
+													"nodes": [],
+													"selections": {
+														"properties": {
+															"text": {
+																"value": "",
+																"fixedValue": false
+															}
+														}
+													}
+												}, {
+													"name": "sap.m.Text",
+													"type": "Control",
+													"nodes": [],
+													"selections": {
+														"properties": {
+															"text": {
+																"value": "",
+																"fixedValue": false
+															}
+														}
+													}
+												}]
+											}],
+											"selections": {}
+										}, {
+											"name": "sap.m.HBox",
+											"type": "Control",
+											"nodes": [{
+												"name": "items",
+												"label": "items",
+												"type": "Aggregation",
+												"aggregationType": "Manual",
+												"multiple": true,
+												"nodes": [{
+													"name": "sap.m.Table",
+													"type": "Control",
+													"nodes": []
+												}]
+											}],
+											"selections": {}
+										}]
+									}],
+									"selections": {}
+								}]
+							}],
+							"selections": {}
+						}]
+					}],
+					"selections": {}
+				}]
+			}, {
+				"name": "App1",
+				"type": "Block",
+				"nodes": [{
+					"name": "sap.m.VBox",
+					"type": "Control",
+					"selections": {
+						"styleClass": "sapUiTinyMargin"
+					},
+					"nodes": [{
+						"name": "items",
+						"label": "items",
+						"type": "Aggregation",
+						"aggregationType": "Manual",
+						"multiple": true,
+						"nodes": [{
+							"name": "sap.m.Button",
+							"type": "Control",
+							"selections": {
+								"properties": {
+									"text": {
+										"fixedValue": true,
+										"value": "SAPUI5.in"
+									}
+								},
+								"styleClass": "sapUiTinyMargin"
+							},
+							"nodes": []
+						}]
+					}]
+				}]
+			}, {
+				"name": "Page",
+				"type": "Block",
+				"nodes": [{
+					"name": "sap.m.Page",
+					"type": "Control",
+					"selections": {
+						"properties": {
+							"title": {
+								"value": "SplitApp Page Title",
+								"fixedValue": true
+							}
+						}
+					},
+					"nodes": [{
+						"name": "content",
+						"label": "content",
+						"type": "Aggregation",
+						"aggregationType": "Manual",
+						"multiple": true,
+						"nodes": [{
+							"name": "sap.m.SplitApp",
+							"type": "Control",
+							"nodes": [{
+								"name": "masterPages",
+								"label": "masterPages",
+								"type": "Aggregation",
+								"aggregationType": "Manual",
+								"multiple": true,
+								"nodes": [{
+									"name": "sap.m.List",
+									"type": "Control",
+									"nodes": [{
+										"name": "items",
+										"label": "items",
+										"type": "Aggregation",
+										"aggregationType": "Template",
+										"multiple": true,
+										"nodes": [{
+											"name": "sap.m.StandardListItem",
+											"type": "Control",
+											"nodes": [],
+											"selections": {
+												"properties": {
+													"title": {
+														"value": null,
+														"fixedValue": false
+													},
+													"description": {
+														"value": null,
+														"fixedValue": false
+													}
+												}
+											},
+											"id": "id248562"
+										}]
+									}],
+									"id": "id248557",
+									"selections": {
+										"properties": {
+											"mode": {
+												"value": "SingleSelectMaster",
+												"fixedValue": true
+											}
+										}
+									}
+								}]
+							}, {
+								"name": "detailPages",
+								"label": "detailPages",
+								"type": "Aggregation",
+								"aggregationType": "Manual",
+								"multiple": true,
+								"nodes": []
+							}],
+							"selections": {},
+							"id": "id248532"
+						}]
+					}],
+					"id": "id244487"
+				}]
+			}]
+		}]
+	}]
+}

@@ -1,0 +1,18 @@
+<core:FragmentDefinition xmlns="sap.m"
+	xmlns:core="sap.ui.core">
+	<Toolbar class="homePageCustomToolbar" height="2.5rem">
+		<Button id="idHomeBtn" icon="sap-icon://home"
+			class="sapUiSmallMarginBegin" press="onPressHomeIcon"
+			type="Transparent" />
+		<ToolbarSpacer />
+		<Title text="{i18n>appTitle}" />
+		<ToolbarSpacer />
+		<MenuButton icon="sap-icon://person-placeholder"
+			menuPosition="EndBottom" text="SAPUI5.in">
+			<Menu>
+				<MenuItem icon="sap-icon://log" text="{i18n>logout}"
+					press="onPressBtnLogout" />
+			</Menu>
+		</MenuButton>
+	</Toolbar>
+</core:FragmentDefinition>

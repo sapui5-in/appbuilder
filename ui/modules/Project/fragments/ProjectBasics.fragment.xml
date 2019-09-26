@@ -1,0 +1,12 @@
+<core:FragmentDefinition xmlns="sap.m"
+	xmlns:core="sap.ui.core">
+	<Label text="Project Name" design="Bold"></Label>
+	<Input value="{/projectBasics/projectName}"></Input>
+	<Label text="Namespace" class="sapUiSmallMarginTop" design="Bold"></Label>
+	<Input value="{/projectBasics/projectNamespace}"></Input>
+	<CheckBox selected="{/projectBasics/createView}" text="Create View" visible="{= ${/mode} === 'New'}"
+		class="sapUiMediumMarginTop"></CheckBox>
+	<Label text="View Name" design="Bold" width="100%" visible="{= ${/mode} === 'New'}"/>
+	<Input class="sapUiSmallMarginBottom" value="{/projectBasics/viewName}" visible="{= ${/mode} === 'New'}"
+		enabled="{/projectBasics/createView}"></Input>
+</core:FragmentDefinition>

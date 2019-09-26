@@ -1,0 +1,21 @@
+<core:FragmentDefinition xmlns="sap.m"
+	xmlns:core="sap.ui.core">
+	<Dialog title="Select a Block to Add">
+		<List items="{projectModel>/blockList}"
+			itemPress="onItemPressBlockList" mode="Active">
+			<items>
+				<StandardListItem type="Active"
+					title="{projectModel>name}" />
+			</items>
+			<headerToolbar>
+				<Toolbar>
+					<SearchField liveChange="onLiveChangeSFBlockListDialog" />
+				</Toolbar>
+			</headerToolbar>
+		</List>
+		<buttons>
+			<Button text="Create" press="onPressCreateBlock"></Button>
+			<Button text="Close" press="onPressClose"></Button>
+		</buttons>
+	</Dialog>
+</core:FragmentDefinition>

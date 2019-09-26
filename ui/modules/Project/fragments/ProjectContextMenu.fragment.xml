@@ -1,0 +1,26 @@
+<core:FragmentDefinition xmlns="sap.m"
+	xmlns:core="sap.ui.core">
+	<Menu itemSelected="onItemSelectedContextMenu">
+		<MenuItem key="generateProject" text="Generate Project"
+			visible="{= ${projectModel>type} === 'Project' ? true : false}"
+			icon="sap-icon://action" />
+		<MenuItem key="createNewView" text="Create New View"
+			visible="{= ${projectModel>type} === 'ViewRoot'? true : false}"
+			icon="sap-icon://create" />
+		<MenuItem key="createNewBlock" text="Create New Block"
+			visible="{= ${projectModel>type} === 'BlockRoot'? true : false}"
+			icon="sap-icon://create" />
+		<MenuItem key="updateBlock" text="Update Block"
+			visible="{= (${projectModel>type} === 'Block' || ${projectModel>type} === 'View')? !${projectModel>childBlock} ? true : false : false}"
+			icon="sap-icon://save" />
+		<MenuItem key="updateProject" text="Update Project"
+			visible="{= ${projectModel>type} === 'Project' ? true : false}"
+			icon="sap-icon://save" />
+		<MenuItem key="addBlock" text="Add Block"
+			visible="{= ${projectModel>type} === 'Aggregation' ? ${projectModel>aggregationType} !== 'Template' ? true : false : false}"
+			icon="sap-icon://add" />
+		<MenuItem key="delete" text="Delete {projectModel>type}"
+			visible="{= ['Project', 'Block', 'View', 'Control'].indexOf(${projectModel>type}) !== -1 ? true : false}"
+			icon="sap-icon://decline" />
+	</Menu>
+</core:FragmentDefinition>

@@ -1,0 +1,35 @@
+<core:FragmentDefinition xmlns="sap.m"
+	xmlns:layout="sap.ui.layout" xmlns:core="sap.ui.core"
+	xmlns:dnd="sap.ui.core.dnd">
+	<VBox id="idVBoxAggregationSelector" class="rightSidebarBlock"
+		height="100%"
+		visible="{= ${msModel>/selectedContext/type} === 'Aggregation'? true : false}">
+		<Toolbar>
+			<Title text="UPDATE BLOCK" class="rightSidebarBlockTitle" />
+		</Toolbar>
+		<VBox class="sapUiSmallMargin" height="calc(100% - 4rem)">
+			<SegmentedButton width="100%"
+				selectionChange="onSelectionChangeAggregationType"
+				selectedKey="{= ${msModel>/selectedContext/aggregationType} === 'Template'? 'Template' : 'Manual'}">
+				<items>
+					<SegmentedButtonItem key="Template"
+						text="Template"
+						enabled="{= !!${msModel>/selectedContext/multiple}}" />
+					<SegmentedButtonItem key="Manual" text="Manual" />
+				</items>
+			</SegmentedButton>
+			<Label text="Select" design="Bold" class="sapUiTinyMarginTop" />
+			<ComboBox items="{ path: 'msModel>/templateControls' }"
+				width="100%"
+				selectedKey="{= ${msModel>/selectedContext/aggregationType} === 'Template'? ${msModel>/selectedContext/nodes/0/name} : ''}">
+				<core:Item key="{msModel>key}" text="{msModel>text}" />
+			</ComboBox>
+			<Toolbar style="Clear">
+				<ToolbarSpacer />
+				<Button
+					text="{= ${msModel>/selectedContext/aggregationType} === 'Template'? 'Set Template' : 'Add Control'}"
+					press="onPressAddControlInAggregation" />
+			</Toolbar>
+		</VBox>
+	</VBox>
+</core:FragmentDefinition>

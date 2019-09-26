@@ -1,0 +1,58 @@
+<mvc:View class="sapUiBody backgroundWhite" xmlns:mvc="sap.ui.core.mvc" xmlns="sap.m" xmlns:core="sap.ui.core">
+  <Page id="sapui5in__1" title="{appModel>/title}">
+    <content>
+      <Toolbar id="sapui5in__2" style="Clear">
+        <content>
+          <Title id="sapui5in__3" text="Title"/>
+          <Input id="sapui5in__4" placeholder="Value"/>
+          <ToolbarSpacer id="sapui5in__5" />
+          <Button id="sapui5in__6" text="Click"/>
+        </content>
+      </Toolbar>
+      <ComboBox id="sapui5in__7" items="{appModel>/content/1/items}">
+        <items>
+          <core:Item id="sapui5in__8" text="{appModel>text}" key="{appModel>key}"/>
+          </items>
+        </ComboBox>
+        <VBox id="sapui5in__9" class="[object Object]">
+          <items>
+            <Input id="sapui5in__10" placeholder="Value" width="50%"/>
+            <VBox id="sapui5in__11" height="100%" class="[object Object]">
+              <items>
+                <CheckBox id="sapui5in__12" selected="true" text="Selected"/>
+                <VBox id="sapui5in__13" height="100%" class="[object Object]">
+                  <items>
+                    <CheckBox id="sapui5in__14" selected="true" text="Selected"/>
+                  </items>
+                </VBox>
+                <CheckBox id="sapui5in__15" selected="true" text="Selected"/>
+              </items>
+            </VBox>
+            <Toolbar id="sapui5in__16" style="Clear" class="backgroundBlue">
+              <content>
+                <Title id="sapui5in__17" text="Title"/>
+                <Input id="sapui5in__18" placeholder="Value"/>
+                <ToolbarSpacer id="sapui5in__19" />
+                <Button id="sapui5in__20" text="Click" icon="sap-icon://add-document"/>
+              </content>
+            </Toolbar>
+            <CheckBox id="sapui5in__21" selected="true" text="Selected"/>
+          </items>
+        </VBox>
+        <ActionSelect id="sapui5in__22" items="{appModel>/content/3/items}">
+          <items>
+          </items>
+        </ActionSelect>
+        <Input id="sapui5in__23" placeholder="Value" width="50%"/>
+      </content>
+      <footer>
+        <Toolbar id="sapui5in__24" style="Clear">
+          <content>
+            <Title id="sapui5in__25" text="Title"/>
+            <ToolbarSpacer id="sapui5in__26" />
+            <Button id="sapui5in__27" text="Click"/>
+          </content>
+        </Toolbar>
+      </footer>
+    </Page>
+  </mvc:View>
