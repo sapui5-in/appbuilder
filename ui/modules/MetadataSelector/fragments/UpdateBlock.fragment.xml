@@ -1,37 +1,23 @@
-<core:FragmentDefinition xmlns="sap.m"
-	xmlns:core="sap.ui.core">
-	<VBox class="sapUiMediumMarginBottom rightSidebarBlock"
-		visible="{= ${msModel>/selectedContext/type} === 'Block' || ${msModel>/selectedContext/type} === 'View' ? true : false}">
-		<Toolbar>
-			<Title text="UPDATE BLOCK" class="rightSidebarBlockTitle" />
-		</Toolbar>
-		<VBox class="sapUiSmallMargin">
-			<Label text="{msModel>/selectedContext/type} Name"
-				design="Bold" />
-			<Input required="true" value="{msModel>/selectedContext/name}"
-				change="onChangeBlockName" />
-			<Label text="View Type" design="Bold" width="100%"
-				class="sapUiSmallMarginTop"
-				visible="{= ${msModel>/selectedContext/type} === 'View' ? true : false}" />
-			<ComboBox items="{msModel>/viewTypes}" width="100%"
-				visible="{= ${msModel>/selectedContext/type} === 'View' ? true : false}"
-				selectedKey="{msModel>/selectedContext/viewType}">
-				<items>
-					<core:Item text="{msModel>text}" key="{msModel>key}" />
-				</items>
-			</ComboBox>
-			<Label text="Root Control" design="Bold"
-				class="sapUiTinyMarginTop" />
-			<ComboBox items="{ path: 'msModel>/controlList' }"
-				selectedKey="{parts: [{path: 'msModel>/selectedContext/type'}, {path: 'msModel>/selectedContext/nodes'}], formatter: '.formatter.selectRootControl'}"
-				width="100%" selectionChange="">
-				<core:Item key="{msModel>key}" text="{msModel>text}" />
-			</ComboBox>
-			<Toolbar style="Clear">
-				<ToolbarSpacer />
-				<Button text="Add Root Control"
-					press="onSelectionChangeRootControl"></Button>
-			</Toolbar>
-		</VBox>
-	</VBox>
+<core:FragmentDefinition xmlns="sap.m" xmlns:core="sap.ui.core">
+    <VBox class="sapUiMediumMarginBottom rightSidebarBlock">
+        <Toolbar>
+            <Title text="UPDATE BLOCK" class="rightSidebarBlockTitle"/>
+        </Toolbar>
+        <VBox class="sapUiSmallMargin">
+            <Label text="{msModel>/type} Name" design="Bold"/>
+            <Input required="true" value="{msModel>/name}" change="onChangeBlockName"/>
+            <Label text="View Type" design="Bold" width="100%" class="sapUiSmallMarginTop"
+                   visible="{= ${msModel>/type} === 'View' ? true : false}"/>
+            <ComboBox items="{msModel>/viewTypes}" width="100%" selectedKey="{msModel>/selectedContext/viewType}"
+                      visible="{= ${msModel>/type} === 'View' ? true : false}">
+                <core:Item text="{msModel>text}" key="{msModel>key}"/>
+            </ComboBox>
+            <Label text="Root Control" design="Bold" class="sapUiTinyMarginTop"/>
+            <ComboBox items="{ path: 'msModel>/controlList' }"
+                      selectedKey="{msModel>/rootControl}"
+                      width="100%" selectionChange="onSelectionChangeRootControl">
+                <core:Item key="{msModel>key}" text="{msModel>text}"/>
+            </ComboBox>
+        </VBox>
+    </VBox>
 </core:FragmentDefinition>

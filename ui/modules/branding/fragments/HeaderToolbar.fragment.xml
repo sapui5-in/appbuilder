@@ -11,7 +11,7 @@
 			menuPosition="EndBottom" text="SAPUI5.in">
 			<Menu>
 				<MenuItem icon="sap-icon://log" text="{i18n>logout}"
-					press="onPressBtnLogout" />
+					press="onPressLogout" />
 			</Menu>
 		</MenuButton>
 	</Toolbar>

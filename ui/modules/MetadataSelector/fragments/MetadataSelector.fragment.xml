@@ -1,132 +1,123 @@
-<core:FragmentDefinition xmlns="sap.m"
-	xmlns:core="sap.ui.core" xmlns:l="sap.ui.layout"
-	xmlns:table="sap.ui.table">
-	<VBox
-		visible="{= ${msModel>/selectedContext/type} === 'Control'? true : false}">
-		<VBox class="sapUiMediumMarginBottom rightSidebarBlock">
-			<Toolbar style="Clear">
-				<Title text="PROPERTIES" class="rightSidebarBlockTitle" />
-			</Toolbar>
-			<table:Table id="idControlProperties"
-				class="metadataSelectorTable" enableSelectAll="false"
-				rows="{ path: 'msModel>/controlMetadata/properties' }"
-				selectionMode="None"
-				selectionBehavior="Row"
-				visibleRowCount="{= ${msModel>/controlMetadata/properties}.length}"
-				rowSelectionChange="onRowSelectionChangeControlProperties"
-				columnHeaderVisible="true">
-				<table:columns>
-					<table:Column label="Property">
-						<table:template>
-							<HBox>
-								<CheckBox selected="{msModel>rowSelected}"/>
-								<VBox>
-									<Text text="{msModel>name}" tooltip="{msModel>name}"
-										class="MetadataSelectorPropName"></Text>
-									<Label text="{msModel>type}" tooltip="{msModel>type}"
-										class="MetadataSelectorPropType"></Label>
-								</VBox>
-							</HBox>
-						</table:template>
-					</table:Column>
-					<table:Column label="Value">
-						<table:template>
-							<HBox alignItems="Center" justifyContent="SpaceBetween">
-								<Input value="{msModel>value}"
-									change="onChangeValueProperty"
-									enabled="{ path: 'msModel>rowSelected'}"
-									visible="{ parts: [{path: 'msModel>type'}, {path: 'msModel>show'}], formatter: '.formatter.showValueInputField'}"
-									type="{ path: 'msModel>type', formatter: '.formatter.setPropertyValueInputType'}"
-									showValueHelp="{= ${msModel>type} === 'sap.ui.core.URI' ? true : false}"
-									valueHelpRequest="onValueHelpRequest" />
-								<CheckBox
-									selected="{ parts: [{path: 'msModel>type'}, {path: 'msModel>value'}], formatter: '.formatter.setPropertyValueSelected'}"
-									select="onSelectCBValueProperty"
-									enabled="{ path: 'msModel>rowSelected'}"
-									visible="{ path: 'msModel>type', formatter: '.formatter.showValueCheckBox'}" />
-								<ComboBox items="{ path: 'msModel>probableValues' }"
-									visible="{msModel>show}"
-									selectionChange="onSelectionChangeValueProperty"
-									enabled="{
-												path: 'msModel>rowSelected'}"
-									selectedKey="{ path:
-												'msModel>value'}">
-									<core:Item key="{msModel>key}" text="{msModel>text}" />
-								</ComboBox>
-								<core:Icon src="sap-icon://locked"
-									color="{ parts: [{path: 'msModel>fixedValue'}, {path: 'msModel>rowSelected'}], formatter: '.formatter.setFixedValueIconColor'}"
-									class="sapUiTinyMarginBegin" press="onPressIconFixedValue"
-									tooltip="Fixed Value"></core:Icon>
-							</HBox>
-						</table:template>
-					</table:Column>
-				</table:columns>
-			</table:Table>
-		</VBox>
+<core:FragmentDefinition xmlns="sap.m" xmlns:core="sap.ui.core" xmlns:table="sap.ui.table">
+    <VBox>
+        <VBox class="sapUiMediumMarginBottom rightSidebarBlock">
+            <Toolbar style="Clear">
+                <Title text="PROPERTIES" class="rightSidebarBlockTitle"/>
+            </Toolbar>
+            <table:Table id="idControlProperties"
+                         class="metadataSelectorTable" enableSelectAll="false"
+                         rows="{ path: 'msModel>/controlMetadata/properties' }"
+                         selectionMode="None" selectionBehavior="Row"
+                         visibleRowCount="{= ${msModel>/controlMetadata/properties}.length}" columnHeaderVisible="true">
+                <table:columns>
+                    <table:Column label="Property">
+                        <table:template>
+                            <HBox>
+                                <CheckBox selected="{msModel>rowSelected}" select="onSelectPropertyRow"/>
+                                <VBox>
+                                    <Text text="{msModel>name}" tooltip="{msModel>name}"
+                                          class="MetadataSelectorPropName"/>
+                                    <Label text="{msModel>type}" tooltip="{msModel>type}"
+                                           class="MetadataSelectorPropType"/>
+                                </VBox>
+                            </HBox>
+                        </table:template>
+                    </table:Column>
+                    <table:Column label="Value">
+                        <table:template>
+                            <HBox alignItems="Center" justifyContent="SpaceBetween">
+                                <Input value="{msModel>value}"
+                                       change="onChangeValueProperty"
+                                       enabled="{ path: 'msModel>rowSelected'}"
+                                       visible="{ parts: [{path: 'msModel>type'}, {path: 'msModel>show'}], formatter: '.formatter.showValueInputField'}"
+                                       type="{ path: 'msModel>type', formatter: '.formatter.setPropertyValueInputType'}"
+                                       showValueHelp="{= ${msModel>type} === 'sap.ui.core.URI' ? true : false}"
+                                       valueHelpRequest="onValueHelpRequest"/>
+                                <CheckBox
+                                        selected="{ parts: [{path: 'msModel>type'}, {path: 'msModel>value'}], formatter: '.formatter.setPropertyValueSelected'}"
+                                        select="onSelectCBValueProperty" enabled="{ path: 'msModel>rowSelected'}"
+                                        visible="{ path: 'msModel>type', formatter: '.formatter.showValueCheckBox'}"/>
+                                <ComboBox items="{ path: 'msModel>probableValues' }" visible="{msModel>show}"
+                                          selectionChange="onSelectionChangeValueProperty"
+                                          enabled="{path: 'msModel>rowSelected'}"
+                                          selectedKey="{path: 'msModel>value'}">
+                                    <core:Item key="{msModel>key}" text="{msModel>text}"/>
+                                </ComboBox>
+                                <core:Icon src="sap-icon://locked" tooltip="Fixed Value"
+                                           color="{ parts: [{path: 'msModel>fixedValue'}, {path: 'msModel>rowSelected'}], formatter: '.formatter.setFixedValueIconColor'}"
+                                           class="sapUiTinyMarginBegin" press="onPressIconFixedValue"/>
+                            </HBox>
+                        </table:template>
+                    </table:Column>
+                </table:columns>
+            </table:Table>
+        </VBox>
 
-		<VBox class="sapUiMediumMarginBottom rightSidebarBlock">
-			<Toolbar style="Clear">
-				<Title text="AGGREGATIONS" class="rightSidebarBlockTitle" />
-			</Toolbar>
-			<table:Table id="idControlAggregations"
-				class="metadataSelectorTable" enableSelectAll="false"
-				rows="{ path: 'msModel>/controlMetadata/aggregations' }"
-				visibleRowCount="{= ${msModel>/controlMetadata/aggregations}.length}"
-				selectionMode="None"
-				selectionBehavior="Row"
-				rowSelectionChange="onRowSelectionChangeControlAggregations">
-				<table:columns>
-					<table:Column label="Name">
-						<table:template>
-							<HBox>
-								<CheckBox selected="{msModel>rowSelected}"/>
-							<VBox>
-								<Text text="{msModel>name}" tooltip="{msModel>name}"
-									class="MetadataSelectorPropName"></Text>
-								<Label text="{msModel>type}" tooltip="{msModel>type}"
-									class="MetadataSelectorPropType"></Label>
-							</VBox>
-							</HBox>
-						</table:template>
-					</table:Column>
-					<table:Column label="Multiple" width="80px"
-						hAlign="Center">
-						<table:template>
-							<core:Icon src="sap-icon://accept"
-								visible="{msModel>multiple}" color="green" />
-						</table:template>
-					</table:Column>
-				</table:columns>
-			</table:Table>
-		</VBox>
+        <VBox class="sapUiMediumMarginBottom rightSidebarBlock">
+            <Toolbar style="Clear">
+                <Title text="AGGREGATIONS" class="rightSidebarBlockTitle"/>
+            </Toolbar>
+            <table:Table id="idControlAggregations"
+                         class="metadataSelectorTable" enableSelectAll="false"
+                         rows="{ path: 'msModel>/controlMetadata/aggregations' }"
+                         visibleRowCount="{= ${msModel>/controlMetadata/aggregations}.length}"
+                         selectionMode="None"
+                         selectionBehavior="Row">
+                <table:columns>
+                    <table:Column label="Name">
+                        <table:template>
+                            <HBox>
+                                <CheckBox selected="{msModel>rowSelected}"
+                                          select="onRowSelectionChangeControlAggregations"/>
+                                <VBox>
+                                    <Text text="{msModel>name}" tooltip="{msModel>name}"
+                                          class="MetadataSelectorPropName"/>
+                                    <Label text="{msModel>type}" tooltip="{msModel>type}"
+                                           class="MetadataSelectorPropType"/>
+                                </VBox>
+                            </HBox>
+                        </table:template>
+                    </table:Column>
+                    <table:Column label="Multiple" width="80px"
+                                  hAlign="Center">
+                        <table:template>
+                            <core:Icon src="sap-icon://accept"
+                                       visible="{msModel>multiple}" color="green"/>
+                        </table:template>
+                    </table:Column>
+                </table:columns>
+            </table:Table>
+        </VBox>
 
-		<VBox class="sapUiMediumMarginBottom rightSidebarBlock">
-			<Toolbar style="Clear">
-				<Title text="EVENTS" class="rightSidebarBlockTitle" />
-			</Toolbar>
-			<table:Table id="idControlEvents"
-				class="metadataSelectorTable" enableSelectAll="false"
-				rows="{ path: 'msModel>/controlMetadata/events' }"
-				visibleRowCount="{= ${msModel>/controlMetadata/events}.length}"
-				rowSelectionChange="onRowSelectionChangeControlEvents">
-				<table:columns>
-					<table:Column label="Event Name">
-						<table:template>
-							<Text text="{msModel>name}" class="MetadataSelectorPropName"></Text>
-						</table:template>
-					</table:Column>
-				</table:columns>
-			</table:Table>
-		</VBox>
+        <VBox class="sapUiMediumMarginBottom rightSidebarBlock">
+            <Toolbar style="Clear">
+                <Title text="EVENTS" class="rightSidebarBlockTitle"/>
+            </Toolbar>
+            <table:Table id="idControlEvents" class="metadataSelectorTable" enableSelectAll="false"
+                         rows="{ path: 'msModel>/controlMetadata/events' }"
+                         selectionMode="None"
+                         visibleRowCount="{= ${msModel>/controlMetadata/events}.length}">
+                <table:columns>
+                    <table:Column label="Event Name">
+                        <table:template>
+                            <HBox alignItems="Center">
+                                <CheckBox selected="{msModel>rowSelected}" select="onRowSelectionChangeControlEvents"/>
+                                <Text text="{msModel>name}" class="MetadataSelectorPropName"/>
+                            </HBox>
+                        </table:template>
+                    </table:Column>
+                </table:columns>
+            </table:Table>
+        </VBox>
 
-		<VBox class="rightSidebarBlock">
-			<Toolbar style="Clear">
-				<Title text="StyleClass" class="rightSidebarBlockTitle" />
-			</Toolbar>
-			<VBox class="sapUiSmallMargin">
-				<Input id="idControlStyleClass"
-					change="onChangeControlStyleClass" />
-			</VBox>
-		</VBox>
-	</VBox>
+        <VBox class="rightSidebarBlock">
+            <Toolbar style="Clear">
+                <Title text="StyleClass" class="rightSidebarBlockTitle"/>
+            </Toolbar>
+            <VBox class="sapUiSmallMargin">
+                <Input id="idControlStyleClass"
+                       change="onChangeControlStyleClass"/>
+            </VBox>
+        </VBox>
+    </VBox>
 </core:FragmentDefinition>

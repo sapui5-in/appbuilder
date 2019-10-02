@@ -221,7 +221,7 @@ sap.ui.define(["jquery.sap.global",
 
 					ioTreeModel.setProperty(isAggregationNodePath + "/nodes", laNodes);
 				} else if (loAggregationNode.aggregationType === "Template") {
-					ioTreeModel.setProperty(isAggregationNodePath + "/nodes", ioAddedControl);
+					ioTreeModel.setProperty(isAggregationNodePath + "/nodes", [ioAddedControl]);
 				}
 
 				this.updateBlock(isAggregationNodePath, ioTreeModel);

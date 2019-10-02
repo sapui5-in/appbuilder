@@ -1,0 +1,63 @@
+<core:FragmentDefinition xmlns="sap.m" xmlns:core="sap.ui.core" xmlns:ce="sap.ui.codeeditor">
+    <HBox height="100%" width="100%" backgroundDesign="Transparent">
+        <NavContainer id="idLeftSidebar" width="225px" height="100%" class="leftSidebarDark"
+                      visible="{$this>/showLeftSidebar}">
+            <VBox id="projectHierarchyContainer" width="100%" height="100%"/>
+            <VBox id="blockHierarchyContainer" width="100%" height="100%">
+                <Toolbar height="3rem" style="Clear" class="projectHeaderToolbar">
+                    <Title text="Block Hierarchy" class="projectTreeHeaderToolbarTitle"/>
+                </Toolbar>
+            </VBox>
+        </NavContainer>
+        <VBox height="100%" width="100%">
+            <Toolbar class="headerToolbar" height="3rem">
+                <core:Icon src="sap-icon://menu2" press="toggleLeftSidebar"/>
+                <core:Icon src="sap-icon://tree" class="sapUiSmallMarginBegin" press="toggleBlockTree"/>
+                <ToolbarSpacer/>
+                <Text text="{$this>/pageTitle}" class="appDesignerPageTitle"/>
+                <ToolbarSpacer/>
+                <core:Icon src="sap-icon://bell"/>
+                <MenuButton text="{$this>/userName}" type="Transparent" icon="sap-icon://customer">
+                    <Menu>
+                        <MenuItem icon="sap-icon://log" text="{i18n>logout}" press="onPressLogout"/>
+                    </Menu>
+                </MenuButton>
+            </Toolbar>
+            <Toolbar class="headerToolbar rightSidebarBlockHeaderBar" height="3rem">
+                <Text text="{$this>/previewSectionTitle}" class="appDesignerPageSubTitle"/>
+                <ToolbarSpacer/>
+                <SegmentedButton width="200px" class="SBLivePreview"
+                                 selectionChange="onSelectionChangeSBLivePreview">
+                    <items>
+                        <SegmentedButtonItem key="preview" icon="sap-icon://detail-view"/>
+                        <SegmentedButtonItem key="code" icon="sap-icon://source-code"/>
+                        <SegmentedButtonItem key="data" icon="sap-icon://syntax"/>
+                    </items>
+                </SegmentedButton>
+                <Button type="Transparent" press="toggleRightSidebar"
+                        icon="sap-icon://{= ${$this>/showRightSidebar} ? 'collapse' : 'expand'}"/>
+            </Toolbar>
+            <HBox width="100%" height="calc(100% - 2.5rem)" class="lightGrayBG">
+                <VBox height="100%" fitContainer="true" width="100%" class="middleSection">
+                    <NavContainer height="100%">
+                        <VBox id="preview" height="100%" width="100%" class="preview"/>
+                        <ce:CodeEditor id="code" type="xml"/>
+                        <ce:CodeEditor id="data" type="json"/>
+                    </NavContainer>
+                </VBox>
+                <VBox height="100%" width="375px" visible="{$this>/showRightSidebar}"
+                      class="sapUiMediumMarginBegin">
+                    <ScrollContainer id="updateBlockSection" vertical="true" height="100%"
+                                     horizontal="false" width="100%"
+                                     visible="{= ${$this>/rightSidebarKey} === 'Block' || ${$this>/rightSidebar} === 'View'}"/>
+                    <ScrollContainer id="aggregationSelector" vertical="true" height="100%"
+                                     horizontal="false" width="100%"
+                                     visible="{= ${$this>/rightSidebarKey} === 'Aggregation'}"/>
+                    <ScrollContainer id="metadataSelector" vertical="true" height="100%"
+                                     horizontal="false" width="100%"
+                                     visible="{= ${$this>/rightSidebarKey} === 'Control'}"/>
+                </VBox>
+            </HBox>
+        </VBox>
+    </HBox>
+</core:FragmentDefinition>

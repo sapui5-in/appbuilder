@@ -25,7 +25,7 @@ sap.ui.define([
 			}, true);
 		},
 		
-		onPressBtnLogout: function() {
+		onPressLogout: function() {
 			console.log("Logout Pressed");
 			window.location.replace(window.location.origin + "/auth/logout");
 		}

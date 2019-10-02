@@ -1,7 +1,6 @@
 <core:FragmentDefinition xmlns="sap.m"
 	xmlns:core="sap.ui.core">
-	<VBox height="100%"
-		visible="{= ${msModel>/selectedContext/type}? true : false}">
+	<VBox height="100%">
 		<core:Fragment type="XML"
 			fragmentName="sapui5in.appbuilder.modules.MetadataSelector.fragments.UpdateBlock" />
 		<core:Fragment type="XML"
