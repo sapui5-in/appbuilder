@@ -136,7 +136,8 @@ sap.ui.define(["jquery.sap.global",
                     var lsImmediateBlockFromPath = this.getCorrespondingBlockFromPath(loDroppedControl.getParentNode().getBindingContext("projectModel").getPath());
                     var lsAggregationPath = loDroppedControl.getParentNode().getBindingContext("projectModel").getPath();
 
-                    this.oBlock.updateBlock(lsAggregationPath, this.getProjectModel(), this.getTree());
+                    this.getProjectModel().refresh();
+                    this.triggerShowLivePreview();
                 } else {
                     sap.m.MessageToast.show("Invalid Drop location");
                 }
@@ -166,7 +167,8 @@ sap.ui.define(["jquery.sap.global",
                     var lsImmediateBlockFromPath = this.getCorrespondingBlockFromPath(loDroppedControl.getBindingContext("projectModel").getPath());
                     var lsAggregationPath = loDroppedControl.getParentNode().getBindingContext("projectModel").getPath();
 
-                    this.oBlock.updateBlock(lsAggregationPath, this.getProjectModel(), this.getTree());
+                    this.getProjectModel().refresh();
+                    this.triggerShowLivePreview();
 
 //				this.oBlock.addControlToAggregation(loDroppedControl.getBindingContext("projectModel").getPath(), this.getProjectModel(), loDraggedContextObj[0	]);
                 } else {
@@ -273,7 +275,10 @@ sap.ui.define(["jquery.sap.global",
                     this.getModel("projectModel").setProperty(loDroppedControl.getParentNode().getBindingContext("projectModel").getPath() + "/nodes", laNodes);
 
                     var lsAggregationPath = loDroppedControl.getParentNode().getBindingContext("projectModel").getPath();
-                    this.oBlock.updateBlock(lsAggregationPath, this.getModel("projectModel"), this.getTree());
+                    // this.oBlock.updateBlock(lsAggregationPath, this.getModel("projectModel"), this.getTree());
+
+                    this.getProjectModel().refresh();
+                    this.triggerShowLivePreview();
                 } else {
                     sap.m.MessageToast.show("Invalid Drop location");
                 }

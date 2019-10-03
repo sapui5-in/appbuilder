@@ -41,16 +41,16 @@
                             </Toolbar>
                         </CustomTreeItem>
                     </items>
+                    <dragDropConfig>
+                        <dnd:DragDropInfo sourceAggregation="items"
+                                          targetAggregation="items" dropPosition="Between"
+                                          dragStart="onDragStart" dragEnd="onDragEnd" drop="onDrop"/>
+                    </dragDropConfig>
                     <contextMenu>
                         <core:Fragment type="XML"
                                        fragmentName="sapui5in.appbuilder.modules.Project.fragments.ProjectContextMenu"/>
                     </contextMenu>
                 </Tree>
-                <dragDropConfig>
-                    <dnd:DragDropInfo sourceAggregation="items"
-                                      targetAggregation="items" dropPosition="Between"
-                                      dragStart="onDragStart" dragEnd="onDragEnd" drop="onDrop"/>
-                </dragDropConfig>
             </ScrollContainer>
             <Toolbar>
                 <ToolbarSpacer/>
