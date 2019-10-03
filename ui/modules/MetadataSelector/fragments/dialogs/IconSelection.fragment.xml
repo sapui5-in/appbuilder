@@ -1,7 +1,7 @@
 <core:FragmentDefinition xmlns="sap.m"
 	xmlns:layout="sap.ui.layout" xmlns:core="sap.ui.core">
 	<Dialog title="Select Icon" contentHeight="80%"
-		contentWidth="80%" class="sapUiSizeCompact sapUiContentPadding">
+		contentWidth="80%" class="sapUiSizeCompact sapUiContentPadding" afterClose="onAfterDialogClose">
 		<Toolbar class="sapUiTinyMarginBegin sapUiTinyMarginEnd" style="Clear">
 			<SearchField></SearchField>
 		</Toolbar>

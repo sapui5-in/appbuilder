@@ -260,7 +260,7 @@ sap.ui.define(["jquery.sap.global",
 					//Add some child items
 //					loAggregationNode.nodes.push(this.getChildAggregationNode(isControlName, loAggregationNode.name, loControl));
 
-					roNewControlNode.nodes.push(loAggregationNode);
+					// roNewControlNode.nodes.push(loAggregationNode);
 				}
 
 				return roNewControlNode;

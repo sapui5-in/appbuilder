@@ -110,15 +110,12 @@ sap.ui.define(["jquery.sap.global",
                 this.triggerPropertyChange(ioEvent.getSource().getBindingContext("msModel").getObject());
             },
 
-            //ToDo - to move it to Metadata Selector
             onValueHelpRequest: function (ioEvent) {
                 var _self = this;
-                var loEvent = ioEvent;
                 if (!this._oIconSelection) {
                     this._oIconSelection = new IconSelection({
                         iconSelectFromDialog: function (ioEvent) {
-                            // _self.triggerPropertyChange(ioEvent.mParameters.fixedValue);
-                            _self.onChangeValueProperty(ioEvent.mParameters);
+                            _self.triggerPropertyChange(ioEvent.mParameters);
                         }
                     });
                 }

@@ -18,16 +18,6 @@ sap.ui.define(["jquery.sap.global",
 
             formatter: Formatter,
 
-            metadata: {
-                events: {
-                    selectionChangeTree: {},
-                    selectItem: {},
-                    pressGenerateProject: {},
-                    changeMS: {},
-                    blockModified: {}
-                }
-            },
-
             init: function () {
                 var oEventBus = sap.ui.getCore().getEventBus();
                 oEventBus.subscribe("project", "projectUpdate", this.triggerProjectUpdate, this);
@@ -678,8 +668,6 @@ sap.ui.define(["jquery.sap.global",
                 var loBindingContext = this.getSelectedItem();
                 loBindingContext.nodes = [];
                 loBindingContext.nodes.push(this.getNewControlNode(ioEvent.mParameters));
-
-                this.fireChangeMS(ioEvent);
             },
 
             onChangeBlockName: function (ioEvent) {
@@ -702,6 +690,8 @@ sap.ui.define(["jquery.sap.global",
                     this.getSelectedItem().nodes = [];
                     this.getSelectedItem().nodes.push(this.oBlock.getNewControlNode(arguments[2].name));
                     this.getProjectModel().refresh();
+
+                    this.triggerShowLivePreview();
                 }
             },
 
@@ -725,6 +715,7 @@ sap.ui.define(["jquery.sap.global",
                     }
                 }
                 this.getProjectModel().refresh();
+                this.triggerShowLivePreview();
             },
 
             triggerAggregationChange: function () {
@@ -767,12 +758,15 @@ sap.ui.define(["jquery.sap.global",
                     }
                 }
                 this.getProjectModel().refresh();
+                this.triggerShowLivePreview();
             },
 
             triggerChangeAggregationType: function () {
                 this.getSelectedItem().aggregationType = arguments[2].aggregationType;
                 this.getSelectedItem().nodes = [];
                 this.getProjectModel().refresh();
+
+                this.triggerShowLivePreview();
             },
 
             triggerAddControlInAggregation: function () {
@@ -792,6 +786,8 @@ sap.ui.define(["jquery.sap.global",
                         this.oBlock.addControlToAggregation(lsAggregationNodePath, this.getProjectModel(), this.oBlock.getNewControlNode(arguments[2].control));
                     }
                 }
+
+                this.triggerShowLivePreview();
             },
 
             onPressRemoveControlFromTree: function (ioEvent) {

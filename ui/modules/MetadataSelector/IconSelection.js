@@ -13,10 +13,6 @@ sap.ui.define(["jquery.sap.global",
 			}
 		},
 
-		init: function() {
-			
-		},
-
 		open: function(ioEvent) {
 			this.oSelectedInputField = ioEvent.getSource();
 

@@ -49,7 +49,7 @@
                       class="sapUiMediumMarginBegin">
                     <ScrollContainer id="updateBlockSection" vertical="true" height="100%"
                                      horizontal="false" width="100%"
-                                     visible="{= ${$this>/rightSidebarKey} === 'Block' || ${$this>/rightSidebar} === 'View'}"/>
+                                     visible="{= ${$this>/rightSidebarKey} === 'Block' || ${$this>/rightSidebarKey} === 'View'}"/>
                     <ScrollContainer id="aggregationSelector" vertical="true" height="100%"
                                      horizontal="false" width="100%"
                                      visible="{= ${$this>/rightSidebarKey} === 'Aggregation'}"/>

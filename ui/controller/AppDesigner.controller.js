@@ -33,6 +33,7 @@ sap.ui.define([
         },
 
         navigate: function () {
+            this.getView().byId("idAppBuilderLayout").setShowRightSidebar(true);
             this.getView().byId("idAppBuilderLayout").setRightSidebarKey(arguments[2].type);
         },
 

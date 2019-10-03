@@ -6,7 +6,7 @@ sap.ui.define(["sap/ui/core/XMLComposite"], function (XMLComposite) {
                 previewSectionTitle: {type: "string", defaultValue: "Designer Live Preview"},
                 userName: {type: "string", defaultValue: "SAPUI5.in"},
                 showLeftSidebar: {type: "boolean", defaultValue: true},
-                showRightSidebar: {type: "boolean", defaultValue: true},
+                showRightSidebar: {type: "boolean", defaultValue: false},
                 rightSidebarKey: {type: "string", defaultValue: ""}
             },
             aggregations: {
