@@ -115,8 +115,7 @@
                 <Title text="StyleClass" class="rightSidebarBlockTitle"/>
             </Toolbar>
             <VBox class="sapUiSmallMargin">
-                <Input id="idControlStyleClass"
-                       change="onChangeControlStyleClass"/>
+                <Input id="idControlStyleClass" change="onChangeControlStyleClass"/>
             </VBox>
         </VBox>
     </VBox>

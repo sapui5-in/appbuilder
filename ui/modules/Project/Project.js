@@ -28,6 +28,7 @@ sap.ui.define(["jquery.sap.global",
                 oEventBus.subscribe("ms", "propertyChanged", this.triggerPropertyChange, this);
                 oEventBus.subscribe("ms", "aggregationChanged", this.triggerAggregationChange, this);
                 oEventBus.subscribe("ms", "eventChanged", this.triggerEventChange, this);
+                oEventBus.subscribe("ms", "styleClassChanged", this.triggerStyleClassChange, this);
 
                 this._iIdCount = 1;
                 if (!this._oUI5CodeDataGenerator) {
@@ -56,13 +57,11 @@ sap.ui.define(["jquery.sap.global",
                 this.oBlock = new Block({
                     blockCreate: function (ioData) {
                         _self.getProjectData(ioData);
-                        _self.fireBlockModified(ioData);
                     },
                     blockUpdate: function (ioEvent) {
                         if (ioEvent.mParameters.block && ioEvent.mParameters.blockPath) {
                             var loBlock = _self.updateBlockWithControlId(ioEvent.mParameters.block);
                             _self.getProjectModel().setProperty(ioEvent.mParameters.blockPath, loBlock);
-                            _self.fireBlockModified(ioEvent);
                         }
                     },
                     blockDelete: function (ioData) {
@@ -618,22 +617,10 @@ sap.ui.define(["jquery.sap.global",
                         this.getSelectedItem().nodes.push(ioEvent.nodes[0]);
 
                         this.oBlock.updateBlock(lsControlPath, this.getProjectModel(), this.getTree());
-
-                        this.fireChangeMS(ioEvent);
                     } else {
                         sap.m.MessageToast.show("Invalid Aggregation type");
                     }
                 }
-            },
-
-            onChangeControlStyleClass: function (ioEvent) {
-                this.getSelectedItem().selections.properties.styleClass = {
-                    value: ioEvent.getSource().getValue(),
-                    fixedValue: true
-                };
-                this.getProjectModel().refresh();
-
-                this.fireChangeMS(ioEvent);
             },
 
             getAvailableLibraries: function () {
@@ -660,22 +647,6 @@ sap.ui.define(["jquery.sap.global",
                 }
 
                 return raControlList;
-            },
-
-            onSelectionChangeRootControl: function (ioEvent) {
-                var lsSelectedKey = ioEvent.getSource().getParent().getParent().getItems()[5].getSelectedKey();
-
-                var loBindingContext = this.getSelectedItem();
-                loBindingContext.nodes = [];
-                loBindingContext.nodes.push(this.getNewControlNode(ioEvent.mParameters));
-            },
-
-            onChangeBlockName: function (ioEvent) {
-                if (ioEvent.getSource().getValue()) {
-                    this.fireChangeBlockName(ioEvent.getSource().getValue());
-                } else {
-                    sap.m.MessageToast.show("Name cannot be Empty");
-                }
             },
 
             triggerBlockNameChanged: function () {
@@ -757,6 +728,20 @@ sap.ui.define(["jquery.sap.global",
                         delete (this.getSelectedItem().selections.events[loEventNode.name]);
                     }
                 }
+
+                this.getProjectModel().refresh();
+                this.triggerShowLivePreview();
+            },
+
+            triggerStyleClassChange: function () {
+                if (!this.getSelectedItem().selections.properties) {
+                    this.getSelectedItem().selections.properties = {};
+                }
+                this.getSelectedItem().selections.properties["styleClass"] = {
+                    value: arguments[2].styleClass,
+                    fixedValue: true
+                };
+
                 this.getProjectModel().refresh();
                 this.triggerShowLivePreview();
             },
@@ -764,8 +749,8 @@ sap.ui.define(["jquery.sap.global",
             triggerChangeAggregationType: function () {
                 this.getSelectedItem().aggregationType = arguments[2].aggregationType;
                 this.getSelectedItem().nodes = [];
-                this.getProjectModel().refresh();
 
+                this.getProjectModel().refresh();
                 this.triggerShowLivePreview();
             },
 
@@ -787,6 +772,7 @@ sap.ui.define(["jquery.sap.global",
                     }
                 }
 
+                this.getProjectModel().refresh();
                 this.triggerShowLivePreview();
             },
 
@@ -800,7 +786,9 @@ sap.ui.define(["jquery.sap.global",
 
                 var loImmediateNode = this.getProjectModel().getProperty(laTemp.join("/"));
                 loImmediateNode.nodes.splice(liControlPosition, 1);
+
                 this.getProjectModel().refresh();
+                this.triggerShowLivePreview();
             },
 
             onPressSaveBlock: function (ioEvent) {

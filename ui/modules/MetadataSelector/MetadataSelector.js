@@ -170,6 +170,13 @@ sap.ui.define(["jquery.sap.global",
 
                 var oEventBus = sap.ui.getCore().getEventBus();
                 oEventBus.publish("ms", "eventChanged", loEventNode);
+            },
+
+            onChangeControlStyleClass: function (ioEvent) {
+                var oEventBus = sap.ui.getCore().getEventBus();
+                oEventBus.publish("ms", "styleClassChanged", {
+                    styleClass: ioEvent.getSource().getValue()
+                });
             }
         });
 
