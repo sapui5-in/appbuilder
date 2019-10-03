@@ -1,5 +1,4 @@
-<core:FragmentDefinition xmlns="sap.m"
-                         xmlns:core="sap.ui.core" xmlns:dnd="sap.ui.core.dnd">
+<core:FragmentDefinition xmlns="sap.m" xmlns:core="sap.ui.core" xmlns:dnd="sap.ui.core.dnd">
     <VBox height="100%">
         <items>
             <Toolbar height="3rem" style="Clear"
@@ -31,14 +30,14 @@
                             <Toolbar width="100%" style="Clear">
                                 <Label text="{projectModel>name}" class="projectTreeItemText"/>
                                 <ToolbarSpacer/>
-								<core:Icon src="sap-icon://save" size="11px"
-										   visible="{= ${projectModel>type} === 'Block' || ${projectModel>type} === 'View'}"
-										   tooltip="Save" color="#b6bac3"
-										   press="onPressSaveBlock"/>
-								<core:Icon src="sap-icon://decline" size="11px"
-										   visible="{= ${projectModel>type} === 'Control'}"
-										   tooltip="Remove Control" color="#b6bac3"
-										   press="onPressRemoveControlFromTree"/>
+                                <core:Icon src="sap-icon://save" size="11px"
+                                           visible="{= ${projectModel>type} === 'Block' || ${projectModel>type} === 'View'}"
+                                           tooltip="Save" color="#b6bac3"
+                                           press="onPressSaveBlock"/>
+                                <core:Icon src="sap-icon://decline" size="11px"
+                                           visible="{= ${projectModel>type} === 'Control'}"
+                                           tooltip="Remove Control" color="#b6bac3"
+                                           press="onPressRemoveControlFromTree"/>
                             </Toolbar>
                         </CustomTreeItem>
                     </items>

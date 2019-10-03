@@ -14,13 +14,13 @@ sap.ui.define([
             var _self = this;
             this.getOwnerComponent().getRouter().getRoute("appDesigner").attachPatternMatched(this._onRouteMatched, this);
 
-            this._oUpdateBlock = new UpdateBlock();
-            this._oAggregationSelector = new AggregationSelector();
-            this._oMetadataSelector = new MetadataSelector();
+            this._oProject = new Project();
             this._oDesigner = new Designer({
                 containerId: this.getView().byId("idAppBuilderLayout").getId() + "--preview"
             });
-            this._oProject = new Project();
+            this._oUpdateBlock = new UpdateBlock();
+            this._oAggregationSelector = new AggregationSelector();
+            this._oMetadataSelector = new MetadataSelector();
 
             //Render
             this.getView().byId("idAppBuilderLayout").addProjectContainerItem(this._oProject.getTreeContainer());
@@ -30,6 +30,12 @@ sap.ui.define([
 
             var oEventBus = sap.ui.getCore().getEventBus();
             oEventBus.subscribe("appBuilder", "navigation", this.navigate, this);
+            oEventBus.subscribe("appBuilder", "updateCodeData", this.updateCodeData, this);
+        },
+
+        updateCodeData: function () {
+            this.getView().byId("idAppBuilderLayout").setCode(arguments[2].code);
+            this.getView().byId("idAppBuilderLayout").setData(arguments[2].data);
         },
 
         navigate: function () {
@@ -38,7 +44,7 @@ sap.ui.define([
         },
 
         _onRouteMatched: function (ioEvent) {
-
+            this._oProject.getProjectData();
         },
 
         onPressLogout: function () {

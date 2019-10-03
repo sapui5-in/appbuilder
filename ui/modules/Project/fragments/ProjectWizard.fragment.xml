@@ -8,12 +8,6 @@
 					fragmentName="sapui5in.appbuilder.modules.Project.fragments.ProjectBasics"
 					type="XML" />
 			</WizardStep>
-			<WizardStep id="idWSSettings" validated="true"
-				title="Settings" activate="additionalInfoValidation">
-				<core:Fragment
-					fragmentName="sapui5in.appbuilder.modules.Project.fragments.ProjectSettings"
-					type="XML" />
-			</WizardStep>
 		</Wizard>
 	</NavContainer>
 </core:FragmentDefinition>

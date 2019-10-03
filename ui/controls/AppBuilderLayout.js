@@ -7,7 +7,9 @@ sap.ui.define(["sap/ui/core/XMLComposite"], function (XMLComposite) {
                 userName: {type: "string", defaultValue: "SAPUI5.in"},
                 showLeftSidebar: {type: "boolean", defaultValue: true},
                 showRightSidebar: {type: "boolean", defaultValue: false},
-                rightSidebarKey: {type: "string", defaultValue: ""}
+                rightSidebarKey: {type: "string", defaultValue: ""},
+                code: {type: "string", defaultValue: ""},
+                data: {type: "string", defaultValue: ""}
             },
             aggregations: {
                 projectContainerItems: {

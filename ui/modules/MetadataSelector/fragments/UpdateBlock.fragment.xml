@@ -6,12 +6,12 @@
         <VBox class="sapUiSmallMargin">
             <Label text="{msModel>/type} Name" design="Bold"/>
             <Input required="true" value="{msModel>/name}" change="onChangeBlockName"/>
-            <Label text="View Type" design="Bold" width="100%" class="sapUiSmallMarginTop"
-                   visible="{= ${msModel>/type} === 'View' ? true : false}"/>
-            <ComboBox items="{msModel>/viewTypes}" width="100%" selectedKey="{msModel>/selectedContext/viewType}"
-                      visible="{= ${msModel>/type} === 'View' ? true : false}">
-                <core:Item text="{msModel>text}" key="{msModel>key}"/>
-            </ComboBox>
+<!--            <Label text="View Type" design="Bold" width="100%" class="sapUiSmallMarginTop"-->
+<!--                   visible="{= ${msModel>/type} === 'View' ? true : false}"/>-->
+<!--            <ComboBox items="{msModel>/viewTypes}" width="100%" selectedKey="{msModel>/viewType}"-->
+<!--                      visible="{= ${msModel>/type} === 'View' ? true : false}">-->
+<!--                <core:Item text="{msModel>text}" key="{msModel>key}"/>-->
+<!--            </ComboBox>-->
             <Label text="Root Control" design="Bold" class="sapUiTinyMarginTop"/>
             <ComboBox items="{ path: 'msModel>/controlList' }"
                       selectedKey="{msModel>/rootControl}"

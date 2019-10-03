@@ -11,6 +11,17 @@ sap.ui.define(["jquery.sap.global",
                 this._UBContainer.setModel(new sap.ui.model.json.JSONModel(), "msModel");
                 this.getModel().setSizeLimit(10000);
 
+                // this.getModel().setProperty("/viewTypes", [{
+                //     key: "XML",
+                //     text: "XML View"
+                // }, {
+                //     key: "JS",
+                //     text: "JS View"
+                // }, {
+                //     key: "JSON",
+                //     text: "JSON View"
+                // }]);
+
                 // Subscribe to an Event here
                 var oEventBus = sap.ui.getCore().getEventBus();
                 oEventBus.subscribe("updateBlock", "setSelectedBlock", this.setSelectedBlock, this);

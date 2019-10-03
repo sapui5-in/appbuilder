@@ -52,11 +52,11 @@ sap.ui.define(["jquery.sap.global",
 					namespace: loWSProjectBasics.projectNamespace
 			};
 
-			if (loWSProjectBasics.createView) {
-				loProject.view = {
-						name: loWSProjectBasics.viewName
-				};
-			}
+			// if (loWSProjectBasics.createView) {
+			// 	loProject.view = {
+			// 			name: loWSProjectBasics.viewName
+			// 	};
+			// }
 
 			var loParams = {
 					type: "POST",

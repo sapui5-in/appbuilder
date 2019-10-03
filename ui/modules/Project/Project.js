@@ -11,7 +11,8 @@ sap.ui.define(["jquery.sap.global",
         "sapui5in/appbuilder/modules/ControlSelection",
         "sapui5in/appbuilder/modules/UI5CodeDataGenerator/UI5CodeDataGenerator"
     ],
-    function (jQuery, BaseModule, Ajax, MetadataSelector, Block, ProjectCreate, ProjectEdit, MessageBox, Formatter, IconSelection, ControlSelection, UI5CodeDataGenerator) {
+    function (jQuery, BaseModule, Ajax, MetadataSelector, Block,
+              ProjectCreate, ProjectEdit, MessageBox, Formatter, IconSelection, ControlSelection, UI5CodeDataGenerator) {
         "use strict";
 
         var Project = BaseModule.extend("sapui5in.appbuilder.modules.Project.Project", {
@@ -39,34 +40,30 @@ sap.ui.define(["jquery.sap.global",
 
                 this._oTreeContainer = sap.ui.xmlfragment("AppDesigner", "sapui5in.appbuilder.modules.Project.fragments.ProjectTree", this);
 
-                var loModel1 = new sap.ui.model.json.JSONModel();
-                loModel1.setSizeLimit(10000);
-                this._oTreeContainer.setModel(loModel1, "projectModel");
+                var loModel = new sap.ui.model.json.JSONModel();
+                loModel.setSizeLimit(10000);
+                this._oTreeContainer.setModel(loModel, "projectModel");
 
                 this.initializeModules();
-
-                this.getProjectData();
             },
 
             initializeModules: function () {
                 var _self = this;
                 this.setControlTypes();
 
-                this.oProjectCreate = new ProjectCreate();
+                this.oProjectCreate = new ProjectCreate({
+                    projectCreated: this.getProjectData.bind(this),
+                });
                 this.oProjectEdit = new ProjectEdit();
                 this.oBlock = new Block({
-                    blockCreate: function (ioData) {
-                        _self.getProjectData(ioData);
-                    },
+                    blockCreate: this.getProjectData.bind(this),
                     blockUpdate: function (ioEvent) {
                         if (ioEvent.mParameters.block && ioEvent.mParameters.blockPath) {
                             var loBlock = _self.updateBlockWithControlId(ioEvent.mParameters.block);
                             _self.getProjectModel().setProperty(ioEvent.mParameters.blockPath, loBlock);
                         }
                     },
-                    blockDelete: function (ioData) {
-                        _self.getProjectData(ioData);
-                    }
+                    blockDelete: this.getProjectData.bind(this)
                 });
             },
 
@@ -353,54 +350,56 @@ sap.ui.define(["jquery.sap.global",
                 var loParams = {
                     type: "GET",
                     url: "/projects/list",
-                    fnSuccess: function (ioData) {
-                        if (ioData && ioData.projects && ioData.projects.length) {
-                            var laProjects = ioData.projects;
-                            var laBlocks = ioData.blocks;
-
-                            for (var i = 0; i < laProjects.length; i++) {
-                                laProjects[i].type = "Project";
-                                laProjects[i].nodes = [{
-                                    name: "Views",
-                                    type: "ViewRoot",
-                                    projectOid: laProjects[i]._id,
-                                    nodes: []
-                                }, {
-                                    name: "Blocks",
-                                    type: "BlockRoot",
-                                    projectOid: laProjects[i]._id,
-                                    nodes: []
-                                }];
-                                for (var j = 0; j < laBlocks.length; j++) {
-                                    if (laProjects[i]._id === laBlocks[j].projectOid) {
-                                        if (!laBlocks[j].type) {
-                                            laBlocks[j].type = "Block";
-                                        }
-                                        if (laBlocks[j].code) {
-                                            laBlocks[j].nodes = JSON.parse(laBlocks[j].code);
-                                            delete (laBlocks[j].code);
-                                        } else {
-                                            laBlocks[j].nodes = [];
-                                        }
-                                        if (laBlocks[j].type === "View") {
-                                            laProjects[i].nodes[0].nodes.push(laBlocks[j]);
-                                        } else if (laBlocks[j].type === "Block") {
-                                            laProjects[i].nodes[1].nodes.push(laBlocks[j]);
-                                        }
-                                    }
-                                }
-                            }
-                        }
-
-                        if (laProjects) {
-                            laProjects = _self.updateIds(laProjects);
-                            _self.getModel().setProperty("/tree", laProjects);
-                        }
-                        _self.getTree().expandToLevel(2);
-                    }
+                    fnSuccess: this.convertProjectListToTree.bind(this)
                 };
 
                 Ajax.call(loParams);
+            },
+
+            convertProjectListToTree: function (ioData) {
+                if (ioData && ioData.projects && ioData.projects.length) {
+                    var laProjects = ioData.projects;
+                    var laBlocks = ioData.blocks;
+
+                    for (var i = 0; i < laProjects.length; i++) {
+                        laProjects[i].type = "Project";
+                        laProjects[i].nodes = [{
+                            name: "Views",
+                            type: "ViewRoot",
+                            projectOid: laProjects[i]._id,
+                            nodes: []
+                        }, {
+                            name: "Blocks",
+                            type: "BlockRoot",
+                            projectOid: laProjects[i]._id,
+                            nodes: []
+                        }];
+                        for (var j = 0; j < laBlocks.length; j++) {
+                            if (laProjects[i]._id === laBlocks[j].projectOid) {
+                                if (!laBlocks[j].type) {
+                                    laBlocks[j].type = "Block";
+                                }
+                                if (laBlocks[j].code) {
+                                    laBlocks[j].nodes = JSON.parse(laBlocks[j].code);
+                                    delete (laBlocks[j].code);
+                                } else {
+                                    laBlocks[j].nodes = [];
+                                }
+                                if (laBlocks[j].type === "View") {
+                                    laProjects[i].nodes[0].nodes.push(laBlocks[j]);
+                                } else if (laBlocks[j].type === "Block") {
+                                    laProjects[i].nodes[1].nodes.push(laBlocks[j]);
+                                }
+                            }
+                        }
+                    }
+                }
+
+                if (laProjects) {
+                    laProjects = this.updateIds(laProjects);
+                    this.getModel().setProperty("/tree", laProjects);
+                }
+                this.getTree().expandToLevel(2);
             },
 
             updateIds: function (iaProjects) {
@@ -433,10 +432,9 @@ sap.ui.define(["jquery.sap.global",
             },
 
             onPressUpdateProject: function (ioEvent) {
-                var _self = this;
                 var loContext = ioEvent.getSource().getBindingContext("projectModel").getObject();
-
                 var laBlocks = [];
+
                 laBlocks = laBlocks.concat(loContext.nodes[0].nodes).concat(loContext.nodes[1].nodes);
 
                 var loProject = {
@@ -450,9 +448,7 @@ sap.ui.define(["jquery.sap.global",
                     type: "POST",
                     url: "/projects/update",
                     data: loProject,
-                    fnSuccess: function (iaData) {
-                        _self.getProjectData();
-                    }
+                    fnSuccess: this.getProjectData.bind(this)
                 };
                 Ajax.call(loParams);
             },
@@ -538,9 +534,7 @@ sap.ui.define(["jquery.sap.global",
                 var loParams = {
                     type: "DELETE",
                     data: {},
-                    fnSuccess: function (iaData) {
-                        _self.getProjectData();
-                    }
+                    fnSuccess: this.getProjectData.bind(this)
                 };
 
                 if (loBindingContext.getObject().type === "Project") {
@@ -578,7 +572,6 @@ sap.ui.define(["jquery.sap.global",
                     } else {
                         var laPath = isPath.split("/");
                         laPath.pop();
-//					laPath.pop();
 
                         return this.getCorrespondingBlockFromPath(laPath.join("/"));
                     }
@@ -660,8 +653,8 @@ sap.ui.define(["jquery.sap.global",
                 if (this.getSelectedItem() && arguments[2].name) {
                     this.getSelectedItem().nodes = [];
                     this.getSelectedItem().nodes.push(this.oBlock.getNewControlNode(arguments[2].name));
-                    this.getProjectModel().refresh();
 
+                    this.getProjectModel().refresh();
                     this.triggerShowLivePreview();
                 }
             },
@@ -685,6 +678,7 @@ sap.ui.define(["jquery.sap.global",
                         delete (this.getSelectedItem().selections.properties[loProperty.name]);
                     }
                 }
+
                 this.getProjectModel().refresh();
                 this.triggerShowLivePreview();
             },
@@ -777,18 +771,25 @@ sap.ui.define(["jquery.sap.global",
             },
 
             onPressRemoveControlFromTree: function (ioEvent) {
-                var loSelectedItemContext = this.getSelectedItemContext();
-                var lsContextPath = ioEvent.getSource().getBindingContext("projectModel").getPath();
-                var laTemp = lsContextPath.split("/");
-                var liControlPosition = laTemp[laTemp.length - 1];
-                laTemp.pop();
-                laTemp.pop();
+                var loItem = ioEvent.getSource();
 
-                var loImmediateNode = this.getProjectModel().getProperty(laTemp.join("/"));
-                loImmediateNode.nodes.splice(liControlPosition, 1);
+                MessageBox.warning("Are you sure, you want to delete?", {
+                    stretch: false,
+                    actions: [sap.m.MessageBox.Action.YES, sap.m.MessageBox.Action.NO],
+                    onClose: function (isAction) {
+                        var lsContextPath = loItem.getBindingContext("projectModel").getPath();
+                        var laTemp = lsContextPath.split("/");
+                        var liControlPosition = laTemp[laTemp.length - 1];
+                        laTemp.pop();
+                        laTemp.pop();
 
-                this.getProjectModel().refresh();
-                this.triggerShowLivePreview();
+                        var loImmediateNode = this.getProjectModel().getProperty(laTemp.join("/"));
+                        loImmediateNode.nodes.splice(liControlPosition, 1);
+
+                        this.getProjectModel().refresh();
+                        this.triggerShowLivePreview();
+                    }.bind(this)
+                });
             },
 
             onPressSaveBlock: function (ioEvent) {

@@ -28,6 +28,12 @@ sap.ui.define(["jquery.sap.global",
                 var _self = this;
                 var loXML = $.parseXML(ioCodeData[0]);
 
+                var oEventBus = sap.ui.getCore().getEventBus();
+                oEventBus.publish("appBuilder", "updateCodeData", {
+                    code: ioCodeData[0],
+                    data: JSON.stringify(ioCodeData[1], null, 2)
+                });
+
                 sap.ui.view({
                     async: true,
                     type: sap.ui.core.mvc.ViewType.XML,

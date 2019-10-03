@@ -270,21 +270,12 @@ sap.ui.define(["jquery.sap.global",
 		},
 
 		getChildAggregationNode: function(isParentControlName, isAggregationName, ioControl) {
-			var roChildAggregationMapping = {
-
-			};
-
 			var roNode = {
 					type: "Control",
 					nodes: []
 			};
 
-
 			return roNode;
-		},
-
-		updateAggregationType: function(ioAggregationNode, isAggregationType) {
-
 		},
 
 		updateBlock: function(isAggregationNodePath, ioTreeModel, ioControl) {
@@ -317,10 +308,6 @@ sap.ui.define(["jquery.sap.global",
 					return this.getImmediateBlockPath(laPath.join("/"), ioModel, iaType);
 				}
 			}
-		},
-
-		highlightDroppedElement: function() {
-
 		}
 	});
 

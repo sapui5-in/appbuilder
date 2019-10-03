@@ -53,6 +53,16 @@ module.exports = {
 								loBlock.userOid = ioProjCreateData.userOid;
 
 								BlocksModule.create(loBlock, fnBlockReturn);
+							} else {
+								roReturn = {
+									messages: [{
+										code: "S",
+										message: "New Project Created"
+									}],
+									status: 200,
+									data: ioProjCreateData
+								};
+								fnReturn(roReturn);
 							}
 						}
 					});
@@ -148,13 +158,23 @@ module.exports = {
 									fnReturn(roReturn);
 								} else {
 									var fnBlockReturn = function(ioBlockReturn) {
-										fnReturn(ioBlockReturn);
+										// fnReturn(ioBlockReturn);
 									};
 									var loBlockQuery = {
 											projectOid: ioProject._id,
 											userOid: ioProject.userOid
 									};
 									BlocksModule.deleteBlock(loBlockQuery, fnBlockReturn);
+
+									roReturn = {
+										messages: [{
+											code: "S",
+											message: "Project Deleted"
+										}],
+										status: 200,
+										data: ioProjectsData
+									};
+									fnReturn(roReturn);
 								}
 							});
 						} else {
