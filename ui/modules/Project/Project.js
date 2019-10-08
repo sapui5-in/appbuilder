@@ -3,16 +3,15 @@ sap.ui.define(["jquery.sap.global",
         "sapui5in/appbuilder/modules/Ajax",
         "sapui5in/appbuilder/modules/MetadataSelector/MetadataSelector",
         "sapui5in/appbuilder/modules/Project/Block",
+        "sapui5in/appbuilder/modules/block/BlockService",
+        "sapui5in/appbuilder/modules/Project/ProjectService",
         "sapui5in/appbuilder/modules/Project/ProjectCreate",
         "sapui5in/appbuilder/modules/Project/ProjectEdit",
-        'sap/m/MessageBox',
         "sapui5in/appbuilder/modules/Project/Formatter",
-        "sapui5in/appbuilder/modules/MetadataSelector/IconSelection",
-        "sapui5in/appbuilder/modules/ControlSelection",
-        "sapui5in/appbuilder/modules/UI5CodeDataGenerator/UI5CodeDataGenerator"
+        'sap/m/MessageBox'
     ],
-    function (jQuery, BaseModule, Ajax, MetadataSelector, Block,
-              ProjectCreate, ProjectEdit, MessageBox, Formatter, IconSelection, ControlSelection, UI5CodeDataGenerator) {
+    function (jQuery, BaseModule, Ajax, MetadataSelector, Block, BlockService,
+              ProjectService, ProjectCreate, ProjectEdit, Formatter, MessageBox) {
         "use strict";
 
         var Project = BaseModule.extend("sapui5in.appbuilder.modules.Project.Project", {
@@ -21,8 +20,8 @@ sap.ui.define(["jquery.sap.global",
 
             init: function () {
                 var oEventBus = sap.ui.getCore().getEventBus();
-                oEventBus.subscribe("project", "projectUpdate", this.triggerProjectUpdate, this);
                 oEventBus.subscribe("project", "changeRootControl", this.triggerRootControlChanged, this);
+                oEventBus.subscribe("project", "clickControl", this.triggerOnClickControl, this);
                 oEventBus.subscribe("project", "changeBlockName", this.triggerBlockNameChanged, this);
                 oEventBus.subscribe("project", "changeAggregationType", this.triggerChangeAggregationType, this);
                 oEventBus.subscribe("project", "addControlInAggregation", this.triggerAddControlInAggregation, this);
@@ -32,9 +31,7 @@ sap.ui.define(["jquery.sap.global",
                 oEventBus.subscribe("ms", "styleClassChanged", this.triggerStyleClassChange, this);
 
                 this._iIdCount = 1;
-                if (!this._oUI5CodeDataGenerator) {
-                    this._oUI5CodeDataGenerator = new UI5CodeDataGenerator();
-                }
+                this._bTreeChanged = false;
 //			    this._aAvailableLibraries = ["sap.m", "sap.ui.table", "sap.f", "sap.ui.core", "sap.ui.comp.filterbar", "sap.uxap"];
                 this._aAvailableLibraries = ["sap.m", "sap.ui.core"];
 
@@ -45,6 +42,14 @@ sap.ui.define(["jquery.sap.global",
                 this._oTreeContainer.setModel(loModel, "projectModel");
 
                 this.initializeModules();
+            },
+
+            getModel: function () {
+                return this.getTreeContainer().getModel("projectModel");
+            },
+
+            getTreeContainer: function () {
+                return this._oTreeContainer;
             },
 
             initializeModules: function () {
@@ -65,6 +70,14 @@ sap.ui.define(["jquery.sap.global",
                     },
                     blockDelete: this.getProjectData.bind(this)
                 });
+            },
+
+            getProjectModel: function () {
+                return this.getModel("projectModel");
+            },
+
+            getTree: function () {
+                return this._oTreeContainer.getItems()[1].getContent()[0];
             },
 
             /**
@@ -109,10 +122,6 @@ sap.ui.define(["jquery.sap.global",
                 }
             },
 
-            triggerProjectUpdate: function () {
-
-            },
-
             onDropWithSubNodes: function (ioEvent) {
                 var lsDropPosition = ioEvent.mParameters.mParameters.mParameters.dropPosition;
                 var loDroppedControl = ioEvent.mParameters.mParameters.mParameters.droppedControl;
@@ -121,6 +130,7 @@ sap.ui.define(["jquery.sap.global",
                 if (loDroppedControl.getParentNode().getBindingContext("projectModel").getObject().type === "Aggregation"
                     && loDroppedControl.getParentNode().getBindingContext("projectModel").getObject().aggregationType === "Manual"
                 ) {
+                    this._bTreeChanged = true;
                     var laNodes = loDroppedControl.getParentNode().getBindingContext("projectModel").getObject().nodes;
                     var liDroppedPositionInParent = loDroppedControl.getItemNodeContext().positionInParent;
                     var loDraggedContextObj = JSON.parse(loDraggedControl.getBindingContext("controlSelectionModel").getObject().code);
@@ -151,11 +161,13 @@ sap.ui.define(["jquery.sap.global",
                     if (!loDroppedControl.getBindingContext("projectModel").getObject().nodes) {
                         loDroppedControl.getBindingContext("projectModel").getObject().nodes = [];
                     }
+                    this._bTreeChanged = true;
                     var laNodes = loDroppedControl.getBindingContext("projectModel").getObject().nodes;
                     var loDraggedContextObj = JSON.parse(loDraggedControl.getBindingContext("controlSelectionModel").getObject().code);
 
                     var lsControlName = loDroppedControl.getParentNode().getBindingContext("projectModel").getObject().name;
                     var lsAggregationName = loDroppedControl.getBindingContext("projectModel").getObject().name;
+
                     if (this.isValidAggregation(lsControlName, lsAggregationName, loDraggedContextObj[0].name)) {
                         laNodes.push(loDraggedContextObj[0]);
                     } else {
@@ -164,13 +176,8 @@ sap.ui.define(["jquery.sap.global",
 
                     this.getProjectModel().setProperty(loDroppedControl.getBindingContext("projectModel").getPath() + "/nodes", laNodes);
 
-                    var lsImmediateBlockFromPath = this.getCorrespondingBlockFromPath(loDroppedControl.getBindingContext("projectModel").getPath());
-                    var lsAggregationPath = loDroppedControl.getParentNode().getBindingContext("projectModel").getPath();
-
                     this.getProjectModel().refresh();
                     this.triggerShowLivePreview();
-
-//				this.oBlock.addControlToAggregation(loDroppedControl.getBindingContext("projectModel").getPath(), this.getProjectModel(), loDraggedContextObj[0	]);
                 } else {
                     sap.m.MessageToast.show("Invalid Drop location");
                 }
@@ -207,14 +214,6 @@ sap.ui.define(["jquery.sap.global",
                 });
 
                 this.triggerShowLivePreview();
-            },
-
-            getProjectModel: function () {
-                return this.getModel("projectModel");
-            },
-
-            getTree: function () {
-                return this._oTreeContainer.getItems()[1].getContent()[0];
             },
 
             updateBlockWithControlId: function (ioBlock) {
@@ -266,6 +265,7 @@ sap.ui.define(["jquery.sap.global",
                     && loDraggedControl.getBindingContext("projectModel").getObject().type === "Control"
                     && loDroppedControl.getParentNode().getBindingContext("projectModel").getObject().nodes.length > 1	//If more than 1 element
                 ) {
+                    this._bTreeChanged = true;
                     var laNodes = loDroppedControl.getParentNode().getBindingContext("projectModel").getObject().nodes;
                     var liDraggedPositionInParent = loDraggedControl.getItemNodeContext().positionInParent;
                     var liDroppedPositionInParent = loDroppedControl.getItemNodeContext().positionInParent;
@@ -275,7 +275,6 @@ sap.ui.define(["jquery.sap.global",
                     this.getModel("projectModel").setProperty(loDroppedControl.getParentNode().getBindingContext("projectModel").getPath() + "/nodes", laNodes);
 
                     var lsAggregationPath = loDroppedControl.getParentNode().getBindingContext("projectModel").getPath();
-                    // this.oBlock.updateBlock(lsAggregationPath, this.getModel("projectModel"), this.getTree());
 
                     this.getProjectModel().refresh();
                     this.triggerShowLivePreview();
@@ -309,7 +308,7 @@ sap.ui.define(["jquery.sap.global",
                 } else if (this.getSelectedItem().type === "View") {
                     this.onSelectBlockInProjectTree(this.getSelectedItem());
                 } else if (this.getSelectedItem().type === "Control") {
-                    this.onSelectionControl(this.getSelectedItem());
+                    this.onSelectionControl(this.getSelectedItem(), true);
                 } else if (this.getSelectedItem().type === "Aggregation") {
                     this.onSelectionAggregation(ioEvent);
                 }
@@ -326,22 +325,30 @@ sap.ui.define(["jquery.sap.global",
                     block: ioSelectedItemObject,
                     controlList: this.getModel().getProperty("/controlList")
                 });
+
                 this.triggerShowLivePreview();
             },
 
-            onSelectionControl: function (ioSelectedItemObject) {
+            onSelectionControl: function (ioSelectedItemObject, ibShowLivePreview) {
                 var oEventBus = sap.ui.getCore().getEventBus();
                 oEventBus.publish("ms", "renderMetadata", ioSelectedItemObject);
-                this.triggerShowLivePreview();
+
+                if (ibShowLivePreview) {
+                    this.triggerShowLivePreview(ioSelectedItemObject.controlId);
+                }
             },
 
-            triggerShowLivePreview: function () {
+            triggerShowLivePreview: function (isControlId) {
                 var lsCorrespondingBlockPath = this.getCorrespondingBlockFromPath();
                 var loNewBlock = this.getProjectModel().getProperty(lsCorrespondingBlockPath);
-                var loCodeData = this._oUI5CodeDataGenerator.getCode(loNewBlock);
 
                 var oEventBus = sap.ui.getCore().getEventBus();
-                oEventBus.publish("designer", "renderBlock", loCodeData);
+                oEventBus.publish("designer", "renderBlock", {
+                    block: loNewBlock,
+                    controlId: isControlId,
+                    treeChanged: this._bTreeChanged
+                });
+                this._bTreeChanged = false;
             },
 
             onPressRefreshTree: function () {
@@ -349,7 +356,6 @@ sap.ui.define(["jquery.sap.global",
             },
 
             getProjectData: function () {
-                var _self = this;
                 this._iIdCount = 1;
 
                 var loParams = {
@@ -420,14 +426,6 @@ sap.ui.define(["jquery.sap.global",
                 return iaProjects;
             },
 
-            getModel: function () {
-                return this.getTreeContainer().getModel("projectModel");
-            },
-
-            getTreeContainer: function () {
-                return this._oTreeContainer;
-            },
-
             openCreateProjectDialog: function () {
                 this.oProjectCreate.openWizard();
             },
@@ -437,25 +435,7 @@ sap.ui.define(["jquery.sap.global",
             },
 
             onPressUpdateProject: function (ioEvent) {
-                var loContext = ioEvent.getSource().getBindingContext("projectModel").getObject();
-                var laBlocks = [];
-
-                laBlocks = laBlocks.concat(loContext.nodes[0].nodes).concat(loContext.nodes[1].nodes);
-
-                var loProject = {
-                    _id: loContext._id,
-                    name: loContext.name,
-                    namespace: loContext.namespace,
-                    blocks: laBlocks
-                };
-
-                var loParams = {
-                    type: "POST",
-                    url: "/projects/update",
-                    data: loProject,
-                    fnSuccess: this.getProjectData.bind(this)
-                };
-                Ajax.call(loParams);
+                ProjectService.update(ioEvent.getSource().getBindingContext("projectModel").getObject(), this.getProjectData);
             },
 
             onPressClose: function (ioEvent) {
@@ -514,46 +494,25 @@ sap.ui.define(["jquery.sap.global",
             },
 
             onPressDeleteTreeItem: function (ioEvent) {
-                var _self = this;
-                var loEvent = ioEvent;
-                _self.deleteItemNode(loEvent);
+                var loItem = ioEvent.getSource();
 
-//			MessageBox.warning("Are you sure, you want to delete?", {
-//			stretch: false,
-//			actions: [sap.m.MessageBox.Action.YES, sap.m.MessageBox.Action.NO],
-//			onClose: function(isAction) {
-//			if (isAction == sap.m.MessageBox.Action.YES) {
-//			_self.deleteItemNode(loEvent);
-//			}
-//			}.bind(this)
-//			});
-            },
+                MessageBox.warning("Are you sure, you want to delete?", {
+                    stretch: false,
+                    actions: [sap.m.MessageBox.Action.YES, sap.m.MessageBox.Action.NO],
+                    onClose: function (isAction) {
+                        var lsContextPath = loItem.getBindingContext("projectModel").getPath();
+                        var laTemp = lsContextPath.split("/");
+                        var liControlPosition = laTemp[laTemp.length - 1];
+                        laTemp.pop();
+                        laTemp.pop();
 
-            deleteItemNode: function (ioEvent) {
-                var loBindingContext = ioEvent.getSource().getBindingContext("projectModel");
-                var lsId = loBindingContext.getObject()._id;
-                var laPath = loBindingContext.getPath().split("/");
-                var liItemIndex = laPath[laPath.length - 1];
-                var lsParentPath = laPath.splice(0, laPath.length - 1).join("/");
+                        var loImmediateNode = this.getProjectModel().getProperty(laTemp.join("/"));
+                        loImmediateNode.nodes.splice(liControlPosition, 1);
 
-                var loParams = {
-                    type: "DELETE",
-                    data: {},
-                    fnSuccess: this.getProjectData.bind(this)
-                };
-
-                if (loBindingContext.getObject().type === "Project") {
-                    loParams.url = "/projects/delete/" + lsId;
-                    Ajax.call(loParams);
-                } else if (loBindingContext.getObject().type === "Block" || loBindingContext.getObject().type === "View") {
-                    this.oBlock.deleteBlock(lsId, this.getTree());
-                } else if (loBindingContext.getObject().type === "Control") {
-                    var laNodes = this.getModel().getProperty(lsParentPath);
-                    laNodes.splice(liItemIndex, 1);
-                    this.getModel().setProperty(lsParentPath, laNodes);
-
-                    this.oBlock.updateBlock(lsParentPath, this.getModel("projectModel"), this.getTree());
-                }
+                        this.getProjectModel().refresh();
+                        this.triggerShowLivePreview();
+                    }.bind(this)
+                });
             },
 
             //Gets the Binding Path of Tree Item from the ControlId
@@ -649,15 +608,16 @@ sap.ui.define(["jquery.sap.global",
 
             triggerBlockNameChanged: function () {
                 if (arguments[2].name) {
-                    this.getSelectedItem().name = arguments[2].name;
+                    BlockService.changeBlockName(this.getSelectedItem(), arguments[2].name);
+
                     this.getProjectModel().refresh();
                 }
             },
 
             triggerRootControlChanged: function () {
                 if (this.getSelectedItem() && arguments[2].name) {
-                    this.getSelectedItem().nodes = [];
-                    this.getSelectedItem().nodes.push(this.oBlock.getNewControlNode(arguments[2].name));
+                    this._bTreeChanged = true;
+                    BlockService.changeRootControl(this.getSelectedItem(), arguments[2].name, this.oBlock.getNewControlNode(arguments[2].name));
 
                     this.getProjectModel().refresh();
                     this.triggerShowLivePreview();
@@ -665,95 +625,47 @@ sap.ui.define(["jquery.sap.global",
             },
 
             triggerPropertyChange: function () {
-                var loProperty = arguments[2];
-
-                if (loProperty.rowSelected) {
-                    var loTempProp = {
-                        fixedValue: loProperty.fixedValue,
-                        value: loProperty.value
-                    };
-
-                    if (!this.getSelectedItem().selections.properties) {
-                        this.getSelectedItem().selections.properties = {};
-                    }
-                    this.getSelectedItem().selections.properties[loProperty.name] = loTempProp;
-                } else {
-                    if (this.getSelectedItem().selections.properties
-                        && this.getSelectedItem().selections.properties[loProperty.name]) {
-                        delete (this.getSelectedItem().selections.properties[loProperty.name]);
-                    }
-                }
+                this._bTreeChanged = true;
+                BlockService.changeProperty(this.getSelectedItem(), arguments[2]);
 
                 this.getProjectModel().refresh();
                 this.triggerShowLivePreview();
             },
 
             triggerAggregationChange: function () {
-                var loAggregation = arguments[2];
+                this._bTreeChanged = true;
+                BlockService.changeAggregation(this.getSelectedItem(), arguments[2]);
 
-                if (loAggregation.rowSelected) {
-                    delete (loAggregation.rowSelected);
-
-                    if (!this.getSelectedItem().nodes) {
-                        this.getSelectedItem().nodes = [];
-                    }
-                    this.getSelectedItem().nodes.push(loAggregation);
-                } else {
-                    if (this.getSelectedItem().nodes) {
-                        for (var i = 0; i < this.getSelectedItem().nodes.length; i++) {
-                            if (this.getSelectedItem().nodes[i].name === loAggregation.name) {
-                                this.getSelectedItem().nodes.splice(i, 1);
-                                break;
-                            }
-                        }
-                    }
-                }
                 this.getProjectModel().refresh();
+                this.triggerShowLivePreview();
             },
 
             triggerEventChange: function () {
-                var loEventNode = arguments[2];
-
-                if (loEventNode.rowSelected) {
-                    delete (loEventNode.rowSelected);
-
-                    if (!this.getSelectedItem().selections.events) {
-                        this.getSelectedItem().selections.events = {};
-                    }
-                    this.getSelectedItem().selections.events[loEventNode.name] = {};
-                } else {
-                    if (this.getSelectedItem().selections.events
-                        && this.getSelectedItem().selections.events[loEventNode.name]) {
-                        delete (this.getSelectedItem().selections.events[loEventNode.name]);
-                    }
-                }
+                this._bTreeChanged = true;
+                BlockService.changeEvent(this.getSelectedItem(), arguments[2]);
 
                 this.getProjectModel().refresh();
                 this.triggerShowLivePreview();
             },
 
             triggerStyleClassChange: function () {
-                if (!this.getSelectedItem().selections.properties) {
-                    this.getSelectedItem().selections.properties = {};
-                }
-                this.getSelectedItem().selections.properties["styleClass"] = {
-                    value: arguments[2].styleClass,
-                    fixedValue: true
-                };
+                this._bTreeChanged = true;
+                BlockService.changeStyleClass(this.getSelectedItem(), arguments[2]);
 
                 this.getProjectModel().refresh();
                 this.triggerShowLivePreview();
             },
 
             triggerChangeAggregationType: function () {
-                this.getSelectedItem().aggregationType = arguments[2].aggregationType;
-                this.getSelectedItem().nodes = [];
+                this._bTreeChanged = true;
+                BlockService.changeAggregationType(this.getSelectedItem(), arguments[2]);
 
                 this.getProjectModel().refresh();
                 this.triggerShowLivePreview();
             },
 
             triggerAddControlInAggregation: function () {
+                this._bTreeChanged = true;
                 var lsAggregationNodePath = this.getSelectedItemContext().getPath();
                 var laTemp = lsAggregationNodePath.split("/");
                 laTemp.pop();
@@ -782,6 +694,7 @@ sap.ui.define(["jquery.sap.global",
                     stretch: false,
                     actions: [sap.m.MessageBox.Action.YES, sap.m.MessageBox.Action.NO],
                     onClose: function (isAction) {
+                        this._bTreeChanged = true;
                         var lsContextPath = loItem.getBindingContext("projectModel").getPath();
                         var laTemp = lsContextPath.split("/");
                         var liControlPosition = laTemp[laTemp.length - 1];
@@ -800,6 +713,30 @@ sap.ui.define(["jquery.sap.global",
             onPressSaveBlock: function (ioEvent) {
                 var lsAggregationPath = ioEvent.getSource().getBindingContext("projectModel").getPath();
                 this.oBlock.updateBlock(lsAggregationPath, this.getModel("projectModel"), this.getTree());
+            },
+
+            triggerOnClickControl: function () {
+                this.getTree().expandToLevel(1000);
+
+                if (this.getTree().getItems()[0].getItemNodeContext()) {
+                    var loItemNodeContext = this.getTreeItemFromFieldValue(this.getTree().getItems()[0].getItemNodeContext(), "controlId", arguments[2].control.getId().split("--")[1]);
+                    this.getTree().setSelectedContextPaths([loItemNodeContext.context.getPath()]);
+                    this.onSelectionControl(this.getSelectedItem());
+                }
+            },
+
+            getTreeItemFromFieldValue: function (ioItemNodeContext, isFieldName, isFieldValue) {
+                if (ioItemNodeContext.context.getObject()[isFieldName] === isFieldValue) {
+                    return ioItemNodeContext;
+                } else {
+                    for (var i = 0; i < ioItemNodeContext.children.length; i++) {
+                        var oNode = this.getTreeItemFromFieldValue(ioItemNodeContext.children[i], isFieldName, isFieldValue);
+
+                        if (oNode) {
+                            return oNode;
+                        }
+                    }
+                }
             }
         });
 

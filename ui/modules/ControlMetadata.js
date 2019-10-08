@@ -5,13 +5,13 @@ sap.ui.define([
 
     var ControlMetadata = {
         getMetadata: function (isControlKey) {
-            var loControl = eval("new " + isControlKey + "()");
+            var loControl = eval(isControlKey);
             var roControlMetadata = {
                 properties: this.getProps(loControl),
                 aggregations: this.getControlAggregations(loControl),
                 events: this.getControlEvents(loControl)
             };
-            loControl.destroy();
+            // loControl.destroy();
 
             return roControlMetadata;
         },

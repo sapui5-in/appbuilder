@@ -239,7 +239,7 @@ sap.ui.define(["jquery.sap.global",
 				};
 
 				//Add the default Aggregation
-				var loControl = eval("new " + isControlName + "()");
+				var loControl = eval(isControlName);
 
 				if (loControl.getMetadata().getDefaultAggregationName()) {
 					var loAggregationNode = {
@@ -247,7 +247,7 @@ sap.ui.define(["jquery.sap.global",
 							type: "Aggregation",
 							nodes: []
 					};
-					loControl.destroy();
+					// loControl.destroy();
 
 					if (loControl.getMetadata().getAllAggregations()[loAggregationNode.name].multiple) {
 						loAggregationNode.aggregationType = "Template";

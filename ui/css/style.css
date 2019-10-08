@@ -241,10 +241,22 @@
 	left: 0px;
 	width: 0;
 	height: 0;
-	background: #73b973;
-	border: 1px solid green;
+	/*background: #eafcff;*/
+	border: 1px solid #1180e4;
 	opacity: 0.75;
-	z-index: 10000;
+	/*z-index: 10000;*/
+}
+
+.overlayTextContainer {
+	color: white;
+	background-color: #1180e4;
+	font-size: .75rem;
+	top: -18px;
+	position: relative;
+	left: -1px;
+	padding-left: 2px;
+	padding-right: 2px;
+	font-family: segoe ui;
 }
 
 .rightSidebarBlockHeaderBar {

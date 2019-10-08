@@ -2,166 +2,118 @@
  * ${copyright}
  */
 sap.ui.define(["jquery.sap.global", "sapui5in/appbuilder/modules/BaseModule"],
-		function(jQuery, BaseModule) {
-	"use strict";
-	/**
-	 * Class to enable Control Selection
-	 * 
-	 * @class Class to enable Control Selection
-	 * @param {object} mProperties
-	 *
-	 * @author SAPUI5.in
-	 * @version 1.0
-	 * 
-	 * @constructor
-	 * @public
-	 * @extends sapui5in.appbuilder.modules.BaseModule
-	 * @name sapui5in.appbuilder.modules.ControlHighlight
-	 * 
-	 */
-	var ControlHighlight = BaseModule.extend("sapui5in.appbuilder.modules.ControlHighlight", {
-		metadata: {
-			properties: {
+    function (jQuery, BaseModule) {
+        "use strict";
+        /**
+         * Class to enable Control Selection
+         *
+         * @class Class to enable Control Selection
+         * @param {object} mProperties
+         *
+         * @author SAPUI5.in
+         * @version 1.0
+         *
+         * @constructor
+         * @public
+         * @extends sapui5in.appbuilder.modules.BaseModule
+         * @name sapui5in.appbuilder.modules.ControlHighlight
+         *
+         */
+        var ControlHighlight = BaseModule.extend("sapui5in.appbuilder.modules.ControlHighlight", {
+            metadata: {
+                events: {
+                    clickControl: {
+                        parameters: {
+                            control: {type: 'object'}
+                        }
+                    }
+                }
+            },
 
-				/**
-				 * text
-				 */
-				containerId: {
-					type: "string",
-					group: "Misc"
-				}
-			},
-			events: {
-				clickControl: {}
-			}
-		},
+            init: function () {
+                this._bFlag = true;
+                this.prevElement = null;
+                this._oOverlayDiv = $("#overlayControl");
 
-		init: function() {
-			this.prevElement = null;
-			this._oSelectionBtn = new sap.m.SegmentedButton({
-				selectedKey: "disable",
-				items: [
-					new sap.m.SegmentedButtonItem({
-						text: "Enable",
-						key: "enable",
-						width: "auto"
-					}),
-					new sap.m.SegmentedButtonItem({
-						text: "Disable",
-						key: "disable",
-						width: "auto"
-					})
-					],
-					selectionChange: [function(ioEvent) {
-						this.switchControlHighlight();
-					}, this]
-			});
-			this._oOverlayDiv = $("#overlayControl");
-			this._iCounter = 0;
-		},
+                this._oOverlayDiv.mouseover(function (e) {
+                    $("#__overlayText").css({"display": "initial"});
+                });
+                this._oOverlayDiv.mouseout(function () {
+                    $("#__overlayText").css({"display": "none"});
+                });
+                this.enableClickOnOverlay();
+            },
 
-		switchControlHighlight: function() {
-			var lsKey = this._oSelectionBtn.getSelectedKey();
-			if (lsKey === "enable") {
-				this.enableMouseOver();
-			} else {
-				this.disableMouseOver();
-			}
-		},
+            initialize: function (isContainerId) {
+                if (this._bFlag) {
+                    this._bFlag = false;
+                    this._sContainerId = isContainerId;
+                    $("#" + this.getContainerId()).click(this.clickUI5Control.bind(this));
+                }
+            },
 
-		getSelectionButton: function() {
-			return this._oSelectionBtn;
-		},
+            getContainerId: function () {
+                return this._sContainerId;
+            },
 
-		enableMouseOver: function() {
-			var _self = this;
+            enableClickOnOverlay: function () {
+                this._oOverlayDiv.click(function (e) {
+                    console.log(e);
+                });
+            },
 
-			function highlight(e) {
-				var loSelectedUI5DOMControl = _self.getSelectedUI5DOMControl(e);
+            hideOverlay: function () {
+                this._oOverlayDiv.css({
+                    display: "none"
+                });
+            },
 
-				_self.highlightUI5Control(loSelectedUI5DOMControl);
-			}
+            getSelectedUI5DOMControl: function (e) {
+                var roUI5DOMControl = null;
+                var loSelectedDOMElement = e.target || e.srcElement;
 
-			function click(e) {
-				_self.clickUI5Control(e);
-			}
-//			$("#" + this.getContainerId()).mousemove(highlight);
-			$("#" + this.getContainerId()).click(click);
-		},
+                // Show Control Name
+                var loDOMElem = loSelectedDOMElement;
+                while (loDOMElem.id === "") {
+                    loDOMElem = loSelectedDOMElement.parentElement;
+                    if (!loDOMElem) {
+                        break;
+                    }
+                }
+                if (loDOMElem && loDOMElem.id) {
+                    roUI5DOMControl = $("#" + loDOMElem.id).control(0);
+                    if (roUI5DOMControl) {
+                        this.prevElement = document.getElementById(roUI5DOMControl.getId());
+                    }
+                }
 
-		disableMouseOver: function() {
-			if (this.prevElement !== null) {
-				this.prevElement.classList.remove("ControlHighlight");
-			}
-			$("#" + this.getContainerId()).unbind();
-		},
+                return roUI5DOMControl;
+            },
 
-		getSelectedUI5DOMControl: function(e) {
-			var roUI5DOMControl = null;
-			var loSelectedDOMElement = e.target || e.srcElement;
+            highlightUI5Control: function (ioSelectedUI5DOMControl, isContainerId) {
+                this.initialize(isContainerId);
+                if (ioSelectedUI5DOMControl && $("#" + ioSelectedUI5DOMControl.getId()) && $("#" + ioSelectedUI5DOMControl.getId()).offset()) {
+                    this._oOverlayDiv.css({
+                        "display": "initial",
+                        "top": $("#" + ioSelectedUI5DOMControl.getId()).offset().top,
+                        "left": $("#" + ioSelectedUI5DOMControl.getId()).offset().left,
+                        "height": $("#" + ioSelectedUI5DOMControl.getId()).height(),
+                        "width": $("#" + ioSelectedUI5DOMControl.getId()).outerWidth()
+                    });
+                    if ($("#__overlayText")) {
+                        $("#__overlayText").text(ioSelectedUI5DOMControl.getMetadata().getElementName());
+                    }
+                }
+            },
 
-			// Show Control Name
-			var loDOMElem = loSelectedDOMElement;
-			while (loDOMElem.id === "") {
-				loDOMElem = loSelectedDOMElement.parentElement;
-				if (!loDOMElem) {
-					break;
-				}
-			}
-			if (loDOMElem && loDOMElem.id) {
-				roUI5DOMControl = $("#" + loDOMElem.id).control(0);
-				if (roUI5DOMControl) {
-					this.prevElement = document.getElementById(roUI5DOMControl.getId());
-				}
-			}
+            clickUI5Control: function (e) {
+                var loSelectedUI5DOMControl = this.getSelectedUI5DOMControl(e);
+                this.highlightUI5Control(loSelectedUI5DOMControl);
+                this.fireClickControl({
+                    control: loSelectedUI5DOMControl
+                });
+            }
+        });
 
-			return roUI5DOMControl;
-		},
-
-		highlightUI5Control: function(ioSelectedUI5DOMControl) {
-			var _self = this;
-			if (ioSelectedUI5DOMControl) {
-				this._oOverlayDiv.css({
-					"display": "initial",
-					"top": $("#" + ioSelectedUI5DOMControl.getId()).offset().top,
-					"left": $("#" + ioSelectedUI5DOMControl.getId()).offset().left,
-					"height": $("#" + ioSelectedUI5DOMControl.getId()).height(),
-					"width": $("#" + ioSelectedUI5DOMControl.getId()).width()
-				});
-			}
-
-			setTimeout(function() {
-				_self._oOverlayDiv.css({display: "none"});
-			}, 1000);				
-		},
-
-		clickUI5Control: function(e) {
-			var _self = this;
-
-			var loSelectedUI5DOMControl = this.getSelectedUI5DOMControl(e);
-			if (loSelectedUI5DOMControl) {
-				this._oOverlayDiv.css({
-					"display": "initial",
-					"top": $("#" + loSelectedUI5DOMControl.getId()).offset().top,
-					"left": $("#" + loSelectedUI5DOMControl.getId()).offset().left,
-					"height": $("#" + loSelectedUI5DOMControl.getId()).height(),
-					"width": $("#" + loSelectedUI5DOMControl.getId()).width()
-				});
-				this._iCounter = 1000;
-
-				try {
-					this.fireClickControl(loSelectedUI5DOMControl);
-				} catch (ioError) {
-					console.log(ioError);
-				}
-			}
-
-			setTimeout(function() {
-				_self._oOverlayDiv.css({display: "none"});
-			}, this._iCounter);				
-
-		}
-	});
-
-	return ControlHighlight;
-}, /* bExport= */ true);
+        return ControlHighlight;
+    }, /* bExport= */ true);

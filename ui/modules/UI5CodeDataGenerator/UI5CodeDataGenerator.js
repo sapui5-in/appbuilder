@@ -58,7 +58,7 @@ sap.ui.define(["jquery.sap.global",
 			if (ioAppTree && ioAppTree.type && ioAppTree.type === "Control") {
 				//Add Selected Properties
 				if (ioAppTree.selections && ioAppTree.selections.properties && Object.keys(ioAppTree.selections.properties).length) {
-					var loControl = eval("new " + ioAppTree.name + "()");
+					var loControl = eval(ioAppTree.name);
 					for (var key in ioAppTree.selections.properties) {
 						if (!ioAppTree.selections.properties[key].fixedValue) {
 							if (loControl.getMetadata().getAllProperties()[key].defaultValue !== null
@@ -85,7 +85,7 @@ sap.ui.define(["jquery.sap.global",
 						}
 					}
 
-					loControl.destroy();
+					// loControl.destroy();
 				}
 
 				if (ioAppTree.nodes && ioAppTree.nodes.length) {
@@ -124,7 +124,7 @@ sap.ui.define(["jquery.sap.global",
 			var lsLine = "";
 			var laSelections = [];
 			if (ioAppTree && ioAppTree.type && ioAppTree.type === "Control") {
-				var loControl = eval("new " + ioAppTree.name + "()");
+				var loControl = eval(ioAppTree.name);
 				var lsLibraryName = loControl.getMetadata().getLibraryName();
 				var lsNamespace = this.getXmlns(lsLibraryName);
 				lsLine = "<" + (lsNamespace ? (lsNamespace + ":") : "") + ioAppTree.name.replace((lsLibraryName + "."), "") + " id=\"" + ioAppTree.controlId + "\"";
@@ -165,9 +165,9 @@ sap.ui.define(["jquery.sap.global",
 					iaXML.push(lsLine);
 				}
 
-				loControl.destroy();
+				// loControl.destroy();
 			} else if (ioAppTree && ioAppTree.type && ioAppTree.type === "Aggregation") {
-				var loControl = eval("new " + isControlName + "()");
+				var loControl = eval(isControlName);
 				var lsLibraryName = loControl.getMetadata().getLibraryName();
 				var lsNamespace = this.getXmlns(lsLibraryName);
 
@@ -190,7 +190,7 @@ sap.ui.define(["jquery.sap.global",
 				}
 				lsLine = "</" + (lsNamespace ? (lsNamespace + ":") : "") + ioAppTree.name + ">";
 				iaXML.push(lsLine);
-				loControl.destroy();
+				// loControl.destroy();
 //			} else if (ioAppTree.type && ioAppTree.type === "Block") {
 //				this.generate(ioAppTree.nodes[0], iaXML, isControlName, isModelName, isPath);
 			}
